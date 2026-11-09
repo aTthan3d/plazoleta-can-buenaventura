@@ -23,22 +23,27 @@
 
 <style>
 :root {
-  --bg-dark: #070c14;
-  --bg-card: rgba(14, 22, 36, 0.88);
-  --bg-card-hover: rgba(20, 32, 52, 0.95);
-  --accent-gold: #ffb703;
-  --accent-orange: #fb8500;
-  --accent-teal: #00e5ff;
-  --accent-green: #2ec4b6;
-  --unad-blue: #005883;
-  --text-main: #f0f4f8;
-  --text-muted: #94a3b8;
-  --border-glass: rgba(255, 255, 255, 0.1);
-  --border-glow: rgba(0, 229, 255, 0.35);
+  --bg-dark: #080d0f;
+  --chonta: #4A2E18;
+  --selva: #1E4D2B;
+  --ocre: #D49B35;
+  --oceano: #1A5B66;
+  --pergamino: #F5EBD7;
+  --bg-card: rgba(20, 32, 28, 0.92);
+  --bg-card-hover: rgba(30, 77, 43, 0.5);
+  --accent-gold: #D49B35;
+  --accent-orange: #d97706;
+  --accent-teal: #2dd4bf;
+  --accent-green: #1E4D2B;
+  --unad-blue: #1A5B66;
+  --text-main: #F5EBD7;
+  --text-muted: #cbd5e1;
+  --border-glass: rgba(212, 155, 53, 0.25);
+  --border-glow: rgba(212, 155, 53, 0.55);
   --radius-lg: 18px;
   --radius-md: 12px;
   --radius-sm: 8px;
-  --shadow-neon: 0 0 25px rgba(0, 229, 255, 0.2);
+  --shadow-neon: 0 0 25px rgba(212, 155, 53, 0.28);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -611,7 +616,49 @@ table.admin-table tr:nth-child(even) {
 }
 
 [hidden] { display: none !important; }
-</style>
+.avatar-hero-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.avatar-hero-img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 155, 53, 0.3) 0%, rgba(30, 77, 43, 0.5) 70%, transparent 100%);
+  border: 3px solid #D49B35;
+  box-shadow: 0 0 25px rgba(212, 155, 53, 0.45);
+  padding: 6px;
+  transition: transform 0.3s ease;
+}
+.avatar-hero-img:hover {
+  transform: scale(1.06) rotate(2deg);
+}
+.palette-strip {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 14px 0 20px;
+  flex-wrap: wrap;
+}
+.palette-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.4);
+}
+.palette-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
 </head>
 <body>
 
@@ -619,6 +666,16 @@ table.admin-table tr:nth-child(even) {
 
   <!-- Header -->
   <header>
+  <div class=avatar-hero-container>
+    <img src=avatar_atthan.webp alt=aTthan - Personaje Principal del Pacifico class=avatar-hero-img onerror=this.style.display='none'>
+  </div>
+  <div class=palette-strip>
+    <span class=palette-chip><span class=palette-dot style=background:#4A2E18></span>Chonta #4A2E18</span>
+    <span class=palette-chip><span class=palette-dot style=background:#1E4D2B></span>Selva #1E4D2B</span>
+    <span class=palette-chip><span class=palette-dot style=background:#D49B35></span>Ocre #D49B35</span>
+    <span class=palette-chip><span class=palette-dot style=background:#1A5B66></span>Oceano #1A5B66</span>
+    <span class=palette-chip><span class=palette-dot style=background:#F5EBD7></span>Pergamino #F5EBD7</span>
+  </div>
     <div class="unad-badge">
       <span class="live-indicator"></span>
       UNAD • INGENIERÍA MULTIMEDIA • PROYECTO DE INGENIERÍA I
@@ -1390,3 +1447,5 @@ if (new URLSearchParams(window.location.search).get("admin") === "1") {
 
 </body>
 </html>
+
+
