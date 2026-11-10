@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080e18">
-<title>Validación con Usuarios · Plazoleta CAN Buenaventura 3D</title>
+<title>Evaluación Oficial de Jugadores · Buenaventura: Palafitos de la Vida 3D</title>
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,10 +15,10 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 
-<!-- html2pdf para generación instantánea de fichas en PDF oficiales UNAD -->
+<!-- html2pdf para generación de reporte de evaluación -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-<!-- Canvas Confetti para animación de éxito -->
+<!-- Canvas Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
 <style>
@@ -29,21 +29,19 @@
   --ocre: #D49B35;
   --oceano: #1A5B66;
   --pergamino: #F5EBD7;
-  --bg-card: rgba(20, 32, 28, 0.92);
-  --bg-card-hover: rgba(30, 77, 43, 0.5);
+  --bg-card: rgba(18, 28, 25, 0.94);
+  --bg-card-hover: rgba(30, 77, 43, 0.35);
   --accent-gold: #D49B35;
-  --accent-orange: #d97706;
   --accent-teal: #2dd4bf;
   --accent-green: #1E4D2B;
-  --unad-blue: #1A5B66;
   --text-main: #F5EBD7;
   --text-muted: #cbd5e1;
-  --border-glass: rgba(212, 155, 53, 0.25);
+  --border-glass: rgba(212, 155, 53, 0.28);
   --border-glow: rgba(212, 155, 53, 0.55);
   --radius-lg: 18px;
   --radius-md: 12px;
   --radius-sm: 8px;
-  --shadow-neon: 0 0 25px rgba(212, 155, 53, 0.28);
+  --shadow-neon: 0 0 25px rgba(212, 155, 53, 0.25);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,9 +49,9 @@
 body {
   background-color: var(--bg-dark);
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(0, 88, 131, 0.35) 0%, transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(224, 106, 0, 0.25) 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(10, 16, 28, 0.8) 0%, #070c14 100%);
+    radial-gradient(circle at 15% 15%, rgba(26, 91, 102, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 85% 75%, rgba(212, 155, 53, 0.20) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(8, 13, 15, 0.85) 0%, #06090a 100%);
   background-attachment: fixed;
   color: var(--text-main);
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -67,46 +65,46 @@ h1, h2, h3, h4, .font-heading {
 }
 
 .container {
-  max-width: 920px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
-/* Header & Badges */
+/* Header */
 header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 26px;
 }
 
-.unad-badge {
+.studio-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
-  background: rgba(0, 88, 131, 0.35);
-  border: 1px solid rgba(0, 190, 255, 0.4);
+  padding: 7px 18px;
+  background: rgba(30, 77, 43, 0.45);
+  border: 1px solid var(--border-glow);
   border-radius: 999px;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: var(--accent-teal);
+  color: var(--accent-gold);
   text-transform: uppercase;
-  margin-bottom: 12px;
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+  margin-bottom: 14px;
+  box-shadow: 0 0 16px rgba(212, 155, 53, 0.2);
 }
 
 .live-indicator {
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: var(--accent-teal);
-  box-shadow: 0 0 8px var(--accent-teal);
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
   animation: pulse 2s infinite;
 }
 @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
 
 header h1 {
-  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-size: clamp(1.9rem, 5vw, 2.9rem);
   font-weight: 900;
   letter-spacing: -0.02em;
   background: linear-gradient(135deg, #ffffff 40%, var(--accent-gold) 100%);
@@ -117,8 +115,8 @@ header h1 {
 
 header p.sub {
   color: var(--text-muted);
-  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-  max-width: 680px;
+  font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+  max-width: 740px;
   margin: 0 auto 16px;
 }
 
@@ -127,16 +125,16 @@ header p.sub {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: rgba(14, 22, 36, 0.9);
+  background: rgba(14, 22, 20, 0.9);
   border: 1px solid var(--border-glow);
   border-radius: var(--radius-md);
-  padding: 8px 18px;
-  font-size: 0.9rem;
+  padding: 8px 20px;
+  font-size: 0.92rem;
   box-shadow: var(--shadow-neon);
 }
 .counter-box strong {
   color: var(--accent-gold);
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-family: 'Outfit', sans-serif;
 }
 
@@ -147,126 +145,149 @@ header p.sub {
   border-radius: var(--radius-lg);
   padding: 24px;
   margin-bottom: 24px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
   transition: border-color 0.25s, box-shadow 0.25s;
 }
 .card:hover {
-  border-color: rgba(0, 229, 255, 0.25);
+  border-color: rgba(212, 155, 53, 0.45);
 }
 
 .card-title {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1.25rem;
+  gap: 12px;
+  font-size: 1.3rem;
   font-weight: 800;
   color: #fff;
   margin-bottom: 6px;
 }
 .card-title .icon {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 .card-subtitle {
   color: var(--text-muted);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   margin-bottom: 18px;
 }
 
-/* Banner de Presentación del Juego */
-.banner-container {
-  position: relative;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 2px solid rgba(255, 183, 3, 0.3);
-  margin-bottom: 18px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-}
-.banner-container img {
-  width: 100%;
-  height: auto;
-  display: block;
-  transition: transform 0.4s ease;
-}
-.banner-container:hover img {
-  transform: scale(1.02);
-}
-.banner-badge {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 1px solid var(--accent-gold);
-  color: var(--accent-gold);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 800;
-  backdrop-filter: blur(8px);
-}
-
-/* Botones de Acción / Lanzadores del Juego */
-.game-launch-bar {
+/* ==========================================================================
+   VISOR DUAL INTERACTIVO EN PANTALLA (AMBAS VERSIONES)
+   ========================================================================== */
+.version-tabs {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 10px;
-}
-@media (min-width: 600px) {
-  .game-launch-bar {
-    flex-direction: row;
-  }
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
 }
 
-.btn-game-primary {
-  flex: 1.4;
+.v-tab-btn {
+  flex: 1;
+  min-width: 220px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: linear-gradient(135deg, #e06a00 0%, #ff9e00 100%);
-  color: #fff;
-  text-decoration: none;
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 800;
-  padding: 16px 22px;
-  border-radius: var(--radius-md);
-  border: 0;
-  cursor: pointer;
-  box-shadow: 0 6px 20px rgba(224, 106, 0, 0.45);
-  transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
-  text-align: center;
-}
-.btn-game-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(224, 106, 0, 0.6);
-  filter: brightness(1.08);
-}
-
-.btn-game-secondary {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: rgba(0, 88, 131, 0.35);
-  border: 1.5px solid rgba(0, 190, 255, 0.4);
-  color: var(--accent-teal);
-  text-decoration: none;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
   padding: 14px 18px;
   border-radius: var(--radius-md);
+  background: rgba(20, 32, 28, 0.8);
+  border: 2px solid var(--border-glass);
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.02rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.15s;
-  text-align: center;
+  transition: all 0.2s ease;
 }
-.btn-game-secondary:hover {
-  background: rgba(0, 88, 131, 0.55);
-  border-color: var(--accent-teal);
+.v-tab-btn:hover {
+  border-color: var(--ocre);
+  color: #fff;
   transform: translateY(-2px);
+}
+.v-tab-btn.active {
+  background: linear-gradient(135deg, rgba(30, 77, 43, 0.9) 0%, rgba(74, 46, 24, 0.85) 100%);
+  border-color: var(--ocre);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(212, 155, 53, 0.4);
+}
+.v-tab-btn .badge-pill {
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--ocre);
+  color: #000;
+  font-weight: 800;
+}
+
+.game-viewport-wrapper {
+  position: relative;
+  width: 100%;
+  background: #000;
+  border: 2px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+}
+
+.game-iframe-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  background: #05080c;
+}
+
+.game-iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.game-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(10, 16, 20, 0.95);
+  border-top: 1px solid var(--border-glass);
+  flex-wrap: wrap;
+}
+
+.game-toolbar .status-info {
+  font-size: 0.88rem;
+  color: var(--pergamino);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.game-toolbar .tool-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30, 77, 43, 0.6);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.btn-tool:hover {
+  background: var(--ocre);
+  color: #000;
+  border-color: var(--ocre);
 }
 
 .controls-hint {
@@ -275,18 +296,59 @@ header p.sub {
   justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
-  padding: 10px 14px;
-  background: rgba(0, 0, 0, 0.35);
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.4);
   border-radius: var(--radius-sm);
   margin-top: 12px;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   color: var(--text-muted);
 }
 .controls-hint span strong {
   color: var(--accent-gold);
 }
 
-/* Campos de Formulario */
+/* ==========================================================================
+   IDENTIDAD VISUAL Y PALETA CROMÁTICA
+   ========================================================================== */
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.palette-card {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-glass);
+  text-align: center;
+}
+.palette-swatch {
+  height: 48px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.palette-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+}
+.palette-hex {
+  font-size: 0.78rem;
+  color: var(--ocre);
+  font-family: monospace;
+}
+.palette-role {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   FORMULARIO DE EVALUACIÓN
+   ========================================================================== */
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr;
@@ -297,57 +359,44 @@ header p.sub {
 }
 
 .form-group {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .form-group label {
   display: block;
   font-size: 0.88rem;
-  font-weight: 600;
-  color: #e2e8f0;
+  font-weight: 700;
+  color: var(--text-main);
   margin-bottom: 6px;
 }
-.form-group label .req {
-  color: var(--accent-orange);
-}
-
-.form-control {
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
   width: 100%;
   padding: 12px 14px;
-  background: rgba(6, 12, 20, 0.7);
+  background: rgba(8, 14, 18, 0.85);
   border: 1.5px solid var(--border-glass);
   border-radius: var(--radius-sm);
   color: #fff;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
+  outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.form-control:focus {
-  outline: none;
-  border-color: var(--accent-teal);
-  box-shadow: 0 0 10px rgba(0, 229, 255, 0.25);
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--ocre);
+  box-shadow: 0 0 10px rgba(212, 155, 53, 0.35);
 }
 
-select.form-control {
-  cursor: pointer;
-}
-select.form-control option {
-  background: #0d1522;
-  color: #fff;
-}
-
-textarea.form-control {
-  min-height: 84px;
-  resize: vertical;
-}
-
-/* Misiones / Checklist Interactivo */
-.checklist-grid {
+/* Checkcards */
+.check-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
 }
-@media (min-width: 600px) {
-  .checklist-grid { grid-template-columns: 1fr 1fr; }
+@media (min-width: 640px) {
+  .check-grid { grid-template-columns: 1fr 1fr; }
 }
 
 .check-card {
@@ -355,20 +404,16 @@ textarea.form-control {
   align-items: flex-start;
   gap: 12px;
   padding: 12px 14px;
-  background: rgba(8, 14, 24, 0.6);
-  border: 1.5px solid var(--border-glass);
+  background: rgba(8, 14, 18, 0.65);
+  border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
   user-select: none;
 }
 .check-card:hover {
-  background: rgba(14, 24, 40, 0.85);
-  border-color: rgba(0, 229, 255, 0.3);
-}
-.check-card.checked {
-  background: rgba(0, 88, 131, 0.3);
-  border-color: var(--accent-teal);
+  border-color: var(--ocre);
+  background: rgba(30, 77, 43, 0.25);
 }
 .check-card input[type="checkbox"] {
   display: none;
@@ -386,29 +431,29 @@ textarea.form-control {
   margin-top: 2px;
 }
 .check-card.checked .custom-checkbox {
-  background: var(--accent-teal);
-  border-color: var(--accent-teal);
+  background: var(--ocre);
+  border-color: var(--ocre);
 }
 .check-card.checked .custom-checkbox::after {
   content: "✓";
-  color: #070c14;
+  color: #000;
   font-weight: 900;
   font-size: 0.85rem;
 }
 .check-text b {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: #fff;
   margin-bottom: 2px;
 }
 .check-text span {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 
 /* Escala Likert de Calificación (1 a 5) */
 .likert-item {
-  background: rgba(8, 14, 24, 0.5);
+  background: rgba(8, 14, 18, 0.6);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   padding: 14px 16px;
@@ -416,7 +461,7 @@ textarea.form-control {
   transition: border-color 0.2s;
 }
 .likert-item:hover {
-  border-color: rgba(255, 183, 3, 0.3);
+  border-color: rgba(212, 155, 53, 0.45);
 }
 .likert-header {
   display: flex;
@@ -426,17 +471,18 @@ textarea.form-control {
   margin-bottom: 10px;
 }
 .likert-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #f1f5f9;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
 }
 .likert-badge {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 2px 10px;
   border-radius: 999px;
-  background: rgba(0, 229, 255, 0.15);
-  color: var(--accent-teal);
+  background: rgba(30, 77, 43, 0.6);
+  color: var(--ocre);
+  border: 1px solid var(--border-glass);
   white-space: nowrap;
 }
 
@@ -452,7 +498,7 @@ textarea.form-control {
   align-items: center;
   justify-content: center;
   padding: 10px 4px;
-  background: rgba(14, 22, 36, 0.9);
+  background: rgba(14, 22, 20, 0.85);
   border: 1.5px solid var(--border-glass);
   border-radius: var(--radius-sm);
   color: var(--text-muted);
@@ -462,12 +508,12 @@ textarea.form-control {
 }
 .rate-btn .num {
   font-family: 'Outfit', sans-serif;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 800;
   line-height: 1;
 }
 .rate-btn .desc {
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   margin-top: 4px;
   text-align: center;
   display: none;
@@ -477,15 +523,46 @@ textarea.form-control {
 }
 
 .rate-btn:hover {
-  border-color: var(--accent-gold);
+  border-color: var(--ocre);
   color: #fff;
   transform: translateY(-2px);
 }
 .rate-btn.selected {
-  background: linear-gradient(135deg, rgba(224, 106, 0, 0.4) 0%, rgba(255, 183, 3, 0.4) 100%);
-  border-color: var(--accent-gold);
+  background: linear-gradient(135deg, rgba(30, 77, 43, 0.85) 0%, rgba(212, 155, 53, 0.8) 100%);
+  border-color: var(--ocre);
   color: #fff;
-  box-shadow: 0 0 12px rgba(255, 183, 3, 0.35);
+  box-shadow: 0 0 14px rgba(212, 155, 53, 0.45);
+}
+
+/* Radio Cards para Comparativa A/B */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.radio-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(8, 14, 18, 0.6);
+  border: 1.5px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.radio-card:hover {
+  border-color: var(--ocre);
+  background: rgba(30, 77, 43, 0.2);
+}
+.radio-card input[type="radio"] {
+  accent-color: var(--ocre);
+  width: 18px;
+  height: 18px;
+}
+.radio-card.selected {
+  border-color: var(--ocre);
+  background: rgba(30, 77, 43, 0.35);
 }
 
 /* Botón Final de Envío */
@@ -499,25 +576,26 @@ textarea.form-control {
   justify-content: center;
   gap: 12px;
   width: 100%;
-  max-width: 460px;
-  background: linear-gradient(135deg, #005883 0%, #00b4d8 50%, #00e5ff 100%);
-  color: #070c14;
+  max-width: 500px;
+  background: linear-gradient(135deg, #1E4D2B 0%, #D49B35 100%);
+  color: #fff;
   font-family: 'Outfit', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 900;
-  padding: 18px 32px;
+  padding: 18px 34px;
   border-radius: var(--radius-md);
   border: 0;
   cursor: pointer;
-  box-shadow: 0 8px 30px rgba(0, 229, 255, 0.4);
-  transition: transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 8px 30px rgba(212, 155, 53, 0.4);
+  transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
 }
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 229, 255, 0.65);
+  box-shadow: 0 12px 40px rgba(212, 155, 53, 0.6);
+  filter: brightness(1.1);
 }
 .btn-submit:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -527,7 +605,7 @@ textarea.form-control {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(4, 8, 16, 0.85);
+  background: rgba(4, 8, 10, 0.88);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
@@ -536,14 +614,14 @@ textarea.form-control {
   z-index: 100;
 }
 .modal-box {
-  background: #0c1626;
+  background: #0d1715;
   border: 2px solid var(--accent-gold);
   border-radius: var(--radius-lg);
-  padding: 32px 24px;
-  max-width: 460px;
+  padding: 34px 26px;
+  max-width: 480px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
   animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 @keyframes popIn {
@@ -551,19 +629,51 @@ textarea.form-control {
   to { opacity: 1; transform: scale(1); }
 }
 .modal-box h3 {
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   color: var(--accent-gold);
   margin: 12px 0 8px;
 }
 .modal-box p {
   color: var(--text-muted);
-  font-size: 0.95rem;
-  margin-bottom: 20px;
+  font-size: 0.98rem;
+  margin-bottom: 22px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+@media (min-width: 440px) {
+  .modal-actions { flex-direction: row; }
+}
+.modal-actions button, .modal-actions a {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  text-decoration: none;
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-modal-primary {
+  background: var(--ocre);
+  color: #000;
+}
+.btn-modal-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid var(--border-glass) !important;
 }
 
 /* Modal Admin */
 #modal-admin .modal-box {
-  max-width: 860px;
+  max-width: 900px;
   text-align: left;
   max-height: 90vh;
   overflow-y: auto;
@@ -575,7 +685,7 @@ textarea.form-control {
 table.admin-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
 }
 table.admin-table th, table.admin-table td {
   padding: 10px 12px;
@@ -583,8 +693,8 @@ table.admin-table th, table.admin-table td {
   text-align: left;
 }
 table.admin-table th {
-  background: rgba(0, 88, 131, 0.4);
-  color: var(--accent-teal);
+  background: rgba(30, 77, 43, 0.55);
+  color: var(--ocre);
   font-weight: 700;
 }
 table.admin-table tr:nth-child(even) {
@@ -595,490 +705,431 @@ table.admin-table tr:nth-child(even) {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: rgba(14, 22, 36, 0.92);
+  background: rgba(14, 22, 20, 0.94);
   border: 1px solid var(--border-glow);
-  color: var(--accent-teal);
-  padding: 10px 16px;
+  color: var(--ocre);
   border-radius: 999px;
-  font-size: 0.82rem;
+  padding: 10px 18px;
+  font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
   z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  backdrop-filter: blur(8px);
-}
-.btn-admin-float:hover {
-  background: rgba(0, 88, 131, 0.5);
-  color: #fff;
-}
-
-[hidden] { display: none !important; }
-.avatar-hero-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 16px;
-}
-.avatar-hero-img {
-  width: 140px;
-  height: 140px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 155, 53, 0.3) 0%, rgba(30, 77, 43, 0.5) 70%, transparent 100%);
-  border: 3px solid #D49B35;
-  box-shadow: 0 0 25px rgba(212, 155, 53, 0.45);
-  padding: 6px;
-  transition: transform 0.3s ease;
-}
-.avatar-hero-img:hover {
-  transform: scale(1.06) rotate(2deg);
-}
-.palette-strip {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin: 14px 0 20px;
-  flex-wrap: wrap;
-}
-.palette-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(0, 0, 0, 0.4);
+  gap: 8px;
+  transition: all 0.2s;
 }
-.palette-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
+.btn-admin-float:hover {
+  background: var(--ocre);
+  color: #000;
+  transform: translateY(-2px);
 }
+</style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- Header -->
+  <!-- Header Oficial -->
   <header>
-  <div class=avatar-hero-container>
-    <img src=avatar_atthan.webp alt=aTthan - Personaje Principal del Pacifico class=avatar-hero-img onerror=this.style.display='none'>
-  </div>
-  <div class=palette-strip>
-    <span class=palette-chip><span class=palette-dot style=background:#4A2E18></span>Chonta #4A2E18</span>
-    <span class=palette-chip><span class=palette-dot style=background:#1E4D2B></span>Selva #1E4D2B</span>
-    <span class=palette-chip><span class=palette-dot style=background:#D49B35></span>Ocre #D49B35</span>
-    <span class=palette-chip><span class=palette-dot style=background:#1A5B66></span>Oceano #1A5B66</span>
-    <span class=palette-chip><span class=palette-dot style=background:#F5EBD7></span>Pergamino #F5EBD7</span>
-  </div>
-    <div class="unad-badge">
+    <div class="studio-badge">
       <span class="live-indicator"></span>
-      UNAD • INGENIERÍA MULTIMEDIA • PROYECTO DE INGENIERÍA I
+      BUENAVENTURA: PALAFITOS DE LA VIDA 3D · ESTUDIO OFICIAL
     </div>
-    <h1>Plazoleta CAN Buenaventura 3D</h1>
-    <p class="sub">Portal de Pruebas con Usuarios y Validación UX (Fase 4 - RAC 4). Evalúa la experiencia interactiva, la locomoción del avatar y la nueva Zona de Percusión.</p>
+    <h1>Evaluación de Jugadores y Experiencia 3D</h1>
+    <p class="sub">Formulario interactivo para evaluar el videojuego en este momento. Prueba ambas versiones en pantalla, compara las mejoras de locomoción, la navegación en lancha hacia la isla y la ambientación sonora del Pacífico.</p>
     
-    <div class="counter-box" title="Evaluaciones registradas en tiempo real en Firebase">
-      <span>📊 Evaluaciones registradas:</span>
+    <div class="counter-box" title="Evaluaciones registradas en tiempo real">
+      <span>📊 Evaluaciones recibidas:</span>
       <strong id="counter-display">Cargando...</strong>
-      <span style="color:var(--text-muted); font-size:0.8rem">/ Meta: 15</span>
+      <span style="color:var(--text-muted); font-size:0.85rem">jugadores</span>
     </div>
   </header>
 
-  <!-- Card 1: Centro de Pruebas del Juego (Banner & Lanzadores) -->
-  <section class="card">
+  <!-- SECCIÓN 1: VISOR DUAL EN PANTALLA (AMBAS VERSIONES) -->
+  <section class="card" id="seccion-juego">
     <div class="card-title">
       <span class="icon">🎮</span>
-      <h2>1. Centro de Pruebas del Prototipo WebGL</h2>
+      <h2>1. Prueba las Versiones Directamente en Pantalla</h2>
     </div>
-    <p class="card-subtitle">Antes de diligenciar el formulario, ingresa al videojuego interactivo desde tu navegador (PC o celular) y realiza el recorrido por la plazoleta.</p>
+    <p class="card-subtitle">Selecciona la versión que deseas probar. Puedes alternar libremente entre la <strong>Versión 2.0 (Actualizada)</strong> y la <strong>Versión 1.0 (Anterior)</strong> para comparar la jugabilidad.</p>
 
-    <!-- Banner -->
-    <div class="banner-container">
-      <span class="banner-badge">VERSIÓN 2.0 • OPTIMIZADA</span>
-      <img src="banner_juego.png" alt="Plazoleta CAN Buenaventura 3D - aTthan y Marimba" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80'">
-    </div>
-
-    <!-- Lanzadores de Juego -->
-    <div class="game-launch-bar">
-      <a href="index.html" target="_blank" class="btn-game-primary" id="btn-play-v2">
+    <!-- Pestañas de Selección de Versión -->
+    <div class="version-tabs">
+      <button type="button" class="v-tab-btn active" id="tab-v2" onclick="switchGameVersion('v2')">
         <span>🚀</span>
-        <span>JUGAR VERSIÓN 2.0 (ACTUALIZADA)</span>
-      </a>
-      <a href="https://atthan3d.github.io/plazoleta-can-buenaventura/" target="_blank" class="btn-game-secondary" id="btn-play-v1">
+        <span>Versión 2.0 (Actualizada)</span>
+        <span class="badge-pill">ACTIVA</span>
+      </button>
+      <button type="button" class="v-tab-btn" id="tab-v1" onclick="switchGameVersion('v1')">
         <span>🕹️</span>
-        <span>Ver Versión 1.0 (Comparación A/B)</span>
-      </a>
+        <span>Versión 1.0 (Anterior)</span>
+        <span class="badge-pill" style="background:#555; color:#fff">BASE</span>
+      </button>
     </div>
 
+    <!-- Contenedor del Juego en Pantalla -->
+    <div class="game-viewport-wrapper">
+      <div class="game-iframe-container" id="iframe-box">
+        <iframe id="game-iframe" src="index.html" allow="autoplay; fullscreen; xr-spatial-tracking" title="Visor de Videojuego WebGL"></iframe>
+      </div>
+      
+      <!-- Barra de Herramientas del Visor -->
+      <div class="game-toolbar">
+        <div class="status-info" id="status-info-text">
+          <span>🟢</span>
+          <span>Ejecutando: <strong>Versión 2.0</strong> (Con Isla del Bombo, Salto de Ballena y Lancha Tripulada)</span>
+        </div>
+        <div class="tool-actions">
+          <button type="button" class="btn-tool" onclick="toggleFullscreen()" title="Jugar en Pantalla Completa">
+            <span>⛶</span> Pantalla Completa
+          </button>
+          <button type="button" class="btn-tool" onclick="reloadGameIframe()" title="Reiniciar el juego">
+            <span>🔄</span> Reiniciar
+          </button>
+          <a href="index.html" target="_blank" class="btn-tool" id="btn-external-link" title="Abrir en ventana independiente">
+            <span>↗</span> Abrir en Pestaña Nueva
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guía de Controles Rápida -->
     <div class="controls-hint">
-      <span>⌨️ <strong>W-A-S-D / Flechas:</strong> Caminar</span>
-      <span>🖱️ <strong>Ratón:</strong> Rotar cámara 360°</span>
-      <span>🎶 <strong>Tarima Central:</strong> Tocar Marimba y Percusión</span>
-      <span>⛵ <strong>Lancha Rápida:</strong> Presiona [E] para abordar / desembarcar</span>
-      <span>🚗 <strong>Vías:</strong> Tráfico vehicular reactivo</span>
+      <span>⌨️ <strong>W-A-S-D / Flechas:</strong> Caminar y Correr</span>
+      <span>🖱️ <strong>Ratón:</strong> Rotar cámara orbital 360°</span>
+      <span>⚡ <strong>Espacio:</strong> Saltar</span>
+      <span>⛵ <strong>Tecla [E]:</strong> Abordar / Desembarcar de la lancha</span>
+      <span>🎶 <strong>Tarima:</strong> Tocar tablas de marimba de chonta</span>
     </div>
   </section>
 
-  <!-- Card 1.5: Identidad Visual, Moodboard y Paleta Cromática Oficial -->
+  <!-- SECCIÓN 2: IDENTIDAD VISUAL, MOODBOARD Y PALETA CROMÁTICA OFICIAL -->
   <section class="card">
     <div class="card-title">
       <span class="icon">🎨</span>
-      <h2>Identidad Visual, Moodboard y Paleta Cromática Oficial (Fase 4 - RAC 4)</h2>
+      <h2>2. Identidad Visual, Personaje y Paleta Cromática</h2>
     </div>
-    <p class="card-subtitle">Diseño visual y cromático arraigado en la riqueza cultural, botánica y marina del Pacífico Colombiano (Buenaventura).</p>
+    <p class="card-subtitle">Referencias de diseño visual, tonalidades del Pacífico y el protagonista <strong>aTthan</strong> que dan vida a Buenaventura: Palafitos de la Vida.</p>
 
     <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin: 18px 0;">
-      <div style="flex: 1; min-width: 240px; text-align: center; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 14px; border: 1px solid var(--border-glass);">
-        <img src="avatar_atthan.webp" alt="aTthan - El Caminante del Pacífico" style="max-width: 180px; width: 100%; border-radius: 18px; border: 3px solid var(--ocre); box-shadow: 0 0 25px rgba(212,155,53,0.4);">
-        <p style="font-weight: 700; color: var(--ocre); margin-top: 10px; font-size: 1.05rem;">aTthan · El Caminante del Pacífico</p>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Avatar Oficial y Protagonista 3D</p>
+      <!-- Avatar Oficial -->
+      <div style="flex: 1; min-width: 240px; text-align: center; background: rgba(0,0,0,0.35); padding: 18px; border-radius: 14px; border: 1px solid var(--border-glass);">
+        <img src="avatar_atthan.webp" alt="aTthan - Personaje Principal del Pacífico" style="max-width: 190px; width: 100%; border-radius: 18px; border: 3px solid var(--ocre); box-shadow: 0 0 25px rgba(212,155,53,0.45);" onerror="this.src='banner_juego.png'">
+        <p style="font-weight: 800; color: var(--ocre); margin-top: 10px; font-size: 1.1rem;">aTthan · El Caminante del Pacífico</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Avatar Principal con Sombrero de Paja y Rastas Tradicionales</p>
       </div>
+
+      <!-- Moodboard Oficial -->
       <div style="flex: 2; min-width: 320px;">
-        <div style="border-radius: 14px; overflow: hidden; border: 2px solid var(--border-glass); box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
-          <img src="moodboard_colores.jpg" alt="Moodboard & Colores - Plazoleta CAN Buenaventura" style="width: 100%; display: block;" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80'">
+        <div style="border-radius: 14px; overflow: hidden; border: 2px solid var(--border-glass); box-shadow: 0 6px 25px rgba(0,0,0,0.55);">
+          <img src="moodboard_colores.jpg" alt="Moodboard y Colores Oficiales" style="width: 100%; display: block;" onerror="this.src='banner_juego.png'">
         </div>
       </div>
     </div>
 
-    <!-- Cuadrícula de Colores Oficiales -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 15px;">
-      <div style="background: rgba(74, 46, 24, 0.45); border: 2px solid #4A2E18; border-radius: 12px; padding: 12px; text-align: center;">
-        <div style="width: 36px; height: 36px; border-radius: 50%; background: #4A2E18; margin: 0 auto 8px; border: 2px solid rgba(255,255,255,0.3);"></div>
-        <strong style="color: #F5EBD7; font-size: 0.88rem; display: block;">Madera de Chonta</strong>
-        <span style="font-size: 0.78rem; color: #D49B35; font-family: monospace;">#4A2E18</span>
-        <p style="font-size: 0.74rem; color: #cbd5e1; margin-top: 4px;">Tono Primario · Estructuras y Marimba</p>
+    <!-- Muestrario de Paleta Oficial -->
+    <div class="palette-grid">
+      <div class="palette-card">
+        <div class="palette-swatch" style="background:#4A2E18"></div>
+        <div class="palette-name">Chonta Profunda</div>
+        <div class="palette-hex">#4A2E18</div>
+        <div class="palette-role">Madera & Arquitectura</div>
       </div>
-      <div style="background: rgba(30, 77, 43, 0.45); border: 2px solid #1E4D2B; border-radius: 12px; padding: 12px; text-align: center;">
-        <div style="width: 36px; height: 36px; border-radius: 50%; background: #1E4D2B; margin: 0 auto 8px; border: 2px solid rgba(255,255,255,0.3);"></div>
-        <strong style="color: #F5EBD7; font-size: 0.88rem; display: block;">Verde Selva Pluvial</strong>
-        <span style="font-size: 0.78rem; color: #2dd4bf; font-family: monospace;">#1E4D2B</span>
-        <p style="font-size: 0.74rem; color: #cbd5e1; margin-top: 4px;">Acentos Botánicos · Manglares y Palma</p>
+      <div class="palette-card">
+        <div class="palette-swatch" style="background:#1E4D2B"></div>
+        <div class="palette-name">Selva Pluvial</div>
+        <div class="palette-hex">#1E4D2B</div>
+        <div class="palette-role">Vegetación & Manglar</div>
       </div>
-      <div style="background: rgba(212, 155, 53, 0.3); border: 2px solid #D49B35; border-radius: 12px; padding: 12px; text-align: center;">
-        <div style="width: 36px; height: 36px; border-radius: 50%; background: #D49B35; margin: 0 auto 8px; border: 2px solid rgba(255,255,255,0.3);"></div>
-        <strong style="color: #F5EBD7; font-size: 0.88rem; display: block;">Ocre Ancestral</strong>
-        <span style="font-size: 0.78rem; color: #D49B35; font-family: monospace;">#D49B35</span>
-        <p style="font-size: 0.74rem; color: #cbd5e1; margin-top: 4px;">Resaltados · Feedback y Botón Play</p>
+      <div class="palette-card">
+        <div class="palette-swatch" style="background:#D49B35"></div>
+        <div class="palette-name">Ocre Ancestral</div>
+        <div class="palette-hex">#D49B35</div>
+        <div class="palette-role">Luz & Resaltados</div>
       </div>
-      <div style="background: rgba(26, 91, 102, 0.45); border: 2px solid #1A5B66; border-radius: 12px; padding: 12px; text-align: center;">
-        <div style="width: 36px; height: 36px; border-radius: 50%; background: #1A5B66; margin: 0 auto 8px; border: 2px solid rgba(255,255,255,0.3);"></div>
-        <strong style="color: #F5EBD7; font-size: 0.88rem; display: block;">Azul Océano y Bahía</strong>
-        <span style="font-size: 0.78rem; color: #2dd4bf; font-family: monospace;">#1A5B66</span>
-        <p style="font-size: 0.74rem; color: #cbd5e1; margin-top: 4px;">Aguas Profundas · Canal de Navegación</p>
+      <div class="palette-card">
+        <div class="palette-swatch" style="background:#1A5B66"></div>
+        <div class="palette-name">Océano y Bahía</div>
+        <div class="palette-hex">#1A5B66</div>
+        <div class="palette-role">Aguas Profundas</div>
       </div>
-      <div style="background: rgba(245, 235, 215, 0.2); border: 2px solid #F5EBD7; border-radius: 12px; padding: 12px; text-align: center;">
-        <div style="width: 36px; height: 36px; border-radius: 50%; background: #F5EBD7; margin: 0 auto 8px; border: 2px solid rgba(0,0,0,0.3);"></div>
-        <strong style="color: #F5EBD7; font-size: 0.88rem; display: block;">Pergamino de Carta</strong>
-        <span style="font-size: 0.78rem; color: #F5EBD7; font-family: monospace;">#F5EBD7</span>
-        <p style="font-size: 0.74rem; color: #cbd5e1; margin-top: 4px;">Fondo de Interfaz · Tipografía y Lectura</p>
+      <div class="palette-card">
+        <div class="palette-swatch" style="background:#F5EBD7"></div>
+        <div class="palette-name">Pergamino Carta</div>
+        <div class="palette-hex">#F5EBD7</div>
+        <div class="palette-role">Fondo & Tipografía</div>
       </div>
     </div>
   </section>
 
-  <form id="evaluation-form" autocomplete="off">
+  <!-- SECCIÓN 3: CUESTIONARIO OFICIAL PARA JUGADORES -->
+  <section class="card">
+    <div class="card-title">
+      <span class="icon">📋</span>
+      <h2>3. Cuestionario de Evaluación del Videojuego</h2>
+    </div>
+    <p class="card-subtitle">Tu retroalimentación como jugador es esencial para evaluar la jugabilidad, mecánicas y rendimiento en este momento.</p>
 
-    <!-- Card 2: Identificación del Evaluador -->
-    <section class="card">
-      <div class="card-title">
-        <span class="icon">👤</span>
-        <h2>2. Identificación del Evaluador</h2>
+    <form id="evaluation-form">
+      
+      <!-- Bloque A: Perfil del Jugador -->
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="eval-name">Tu Nombre o Apodo (Nickname): *</label>
+          <input type="text" id="eval-name" required placeholder="Ej: Carlos Gómez / aTthanPlayer">
+        </div>
+        <div class="form-group">
+          <label for="eval-device">Dispositivo de Prueba (Detectado):</label>
+          <input type="text" id="eval-device" readonly>
+        </div>
       </div>
-      <p class="card-subtitle">Datos con fines exclusivamente académicos para el informe de ingeniería de la UNAD.</p>
 
       <div class="grid-2">
         <div class="form-group">
-          <label for="eval-name">Nombre completo <span class="req">*</span></label>
-          <input type="text" id="eval-name" class="form-control" placeholder="Ej. Carlos Andrés Mina" required>
-        </div>
-
-        <div class="form-group">
-          <label for="eval-age">Edad y Ocupación <span class="req">*</span></label>
-          <input type="text" id="eval-age" class="form-control" placeholder="Ej. 24 años / Estudiante / Músico" required>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="form-group">
-          <label for="eval-gamer">Familiaridad con Videojuegos / 3D <span class="req">*</span></label>
-          <select id="eval-gamer" class="form-control" required>
-            <option value="" disabled selected>Selecciona tu nivel...</option>
-            <option value="Principiante (juego muy poco o nunca)">Principiante (juego poco o nada)</option>
-            <option value="Intermedio (juego ocasionalmente en celular o PC)">Intermedio (juego ocasional)</option>
-            <option value="Avanzado / Gamer frecuente">Avanzado / Gamer frecuente</option>
+          <label for="eval-age">Rango de Edad:</label>
+          <select id="eval-age">
+            <option value="Menos de 18">Menos de 18 años</option>
+            <option value="18 - 25" selected>18 a 25 años</option>
+            <option value="26 - 35">26 a 35 años</option>
+            <option value="36 o más">36 años o más</option>
           </select>
         </div>
-
         <div class="form-group">
-          <label for="eval-device">Dispositivo / Navegador de prueba</label>
-          <input type="text" id="eval-device" class="form-control" placeholder="Detectando automáticamente..." readonly>
+          <label for="eval-gamer">Nivel de experiencia con videojuegos 3D:</label>
+          <select id="eval-gamer">
+            <option value="Casual">Jugador Casual (juego de vez en cuando)</option>
+            <option value="Intermedio" selected>Intermedio (familiarizado con controles 3D)</option>
+            <option value="Frecuente">Frecuente / Avanzado (juego habitualmente)</option>
+          </select>
         </div>
       </div>
-    </section>
 
-    <!-- Card 3: Misiones Cumplidas -->
-    <section class="card">
-      <div class="card-title">
-        <span class="icon">🎯</span>
-        <h2>3. Misiones de Prueba en el Juego</h2>
-      </div>
-      <p class="card-subtitle">Marca las tareas que pudiste experimentar dentro del prototipo:</p>
-
-      <div class="checklist-grid">
-        <label class="check-card checked" onclick="toggleCheck(this)">
-          <input type="checkbox" name="mision" value="locomocion" checked>
-          <div class="custom-checkbox"></div>
-          <div class="check-text">
-            <b>Misión 1: Locomoción y Cámara</b>
-            <span>Moví el avatar con WASD y roté la vista 360° con el ratón.</span>
+      <!-- Bloque B: Acciones realizadas en el juego -->
+      <div class="form-group" style="margin-top: 10px;">
+        <label>¿Qué mecánicas o zonas lograste probar durante tu partida?</label>
+        <div class="check-grid">
+          <div class="check-card checked" onclick="toggleCheck(this)">
+            <input type="checkbox" name="misiones" value="locomocion" checked>
+            <div class="custom-checkbox"></div>
+            <div class="check-text">
+              <b>Caminar y Correr con aTthan</b>
+              <span>Movimiento fluido con teclado WASD / Flechas y salto</span>
+            </div>
           </div>
-        </label>
-
-        <label class="check-card checked" onclick="toggleCheck(this)">
-          <input type="checkbox" name="mision" value="personaje" checked>
-          <div class="custom-checkbox"></div>
-          <div class="check-text">
-            <b>Misión 2: Personaje aTthan 2.0</b>
-            <span>Inspeccioné el nuevo modelado del rostro, piel, sombrero y ropa.</span>
+          <div class="check-card checked" onclick="toggleCheck(this)">
+            <input type="checkbox" name="misiones" value="camara" checked>
+            <div class="custom-checkbox"></div>
+            <div class="check-text">
+              <b>Cámara Orbital 360°</b>
+              <span>Rotación del entorno con el movimiento del ratón</span>
+            </div>
           </div>
-        </label>
-
-        <label class="check-card checked" onclick="toggleCheck(this)">
-          <input type="checkbox" name="mision" value="percursion" checked>
-          <div class="custom-checkbox"></div>
-          <div class="check-text">
-            <b>Misión 3: NUEVA Zona de Percusión</b>
-            <span>Caminé sobre las teclas de la marimba y módulos de percusión sonora.</span>
+          <div class="check-card checked" onclick="toggleCheck(this)">
+            <input type="checkbox" name="misiones" value="marimba" checked>
+            <div class="custom-checkbox"></div>
+            <div class="check-text">
+              <b>Tocar la Marimba de Chonta</b>
+              <span>Pisar las teclas sobre la tarima para activar notas musicales</span>
+            </div>
           </div>
-        </label>
-
-        <label class="check-card checked" onclick="toggleCheck(this)">
-          <input type="checkbox" name="mision" value="trafico" checked>
-          <div class="custom-checkbox"></div>
-          <div class="check-text">
-            <b>Misión 4: Tráfico Reactivo</b>
-            <span>Crucé la calzada y comprobé los sonidos de bocina y frenado vehicular.</span>
+          <div class="check-card checked" onclick="toggleCheck(this)">
+            <input type="checkbox" name="misiones" value="lancha" checked>
+            <div class="custom-checkbox"></div>
+            <div class="check-text">
+              <b>Navegar en Lancha Rápida</b>
+              <span>Abordar con tecla [E] y conducir por el mar hacia la isla</span>
+            </div>
           </div>
-        </label>
-      </div>
-    </section>
-
-    <!-- Card 4: Calificación Cuantitativa (Likert 1 a 5) -->
-    <section class="card">
-      <div class="card-title">
-        <span class="icon">⭐</span>
-        <h2>4. Calificación Técnica y de Usabilidad (1 a 5)</h2>
-      </div>
-      <p class="card-subtitle">Selecciona tu nivel de acuerdo: 1 = Muy deficiente, 3 = Aceptable, 5 = Excelente.</p>
-
-      <!-- Ítem 1 -->
-      <div class="likert-item" data-id="q1">
-        <div class="likert-header">
-          <span class="likert-title">1. Controles y Facilidad de Navegación</span>
-          <span class="likert-badge">Usabilidad</span>
-        </div>
-        <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:8px">¿Los controles de movimiento WASD y cámara con ratón resultaron cómodos e intuitivos?</p>
-        <div class="rating-buttons" data-metric="controles">
-          <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Difícil</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Regular</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Normal</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Bueno</span></button>
-          <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)"><span class="num">5</span><span class="desc">Excelente</span></button>
+          <div class="check-card checked" onclick="toggleCheck(this)">
+            <input type="checkbox" name="misiones" value="isla" checked>
+            <div class="custom-checkbox"></div>
+            <div class="check-text">
+              <b>Exploración de la Isla del Bombo</b>
+              <span>Desembarcar en la isla, recorrer la playa y el quiosco sin trabarse</span>
+            </div>
+          </div>
+          <div class="check-card checked" onclick="toggleCheck(this)">
+            <input type="checkbox" name="misiones" value="ballena" checked>
+            <div class="custom-checkbox"></div>
+            <div class="check-text">
+              <b>Avistamiento de la Ballena Yubarta</b>
+              <span>Salto acrobático cinemático emergiendo y sumergiéndose en el mar</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Ítem 2 -->
-      <div class="likert-item" data-id="q2">
-        <div class="likert-header">
-          <span class="likert-title">2. Acabado Facial y Modelado del Personaje aTthan 2.0</span>
-          <span class="likert-badge">Arte y 3D</span>
+      <!-- Bloque C: Calificaciones en Escala de 1 a 5 Estrellas -->
+      <div class="form-group" style="margin-top: 24px;">
+        <label style="font-size:1.05rem; color:var(--ocre); margin-bottom:12px;">Calificación de la Experiencia (1: Muy deficiente · 5: Excelente):</label>
+        
+        <!-- Criterio 1: Controles y Movimiento -->
+        <div class="likert-item">
+          <div class="likert-header">
+            <span class="likert-title">1. Locomoción y Movimiento del Personaje (aTthan)</span>
+            <span class="likert-badge">Control & Físicas</span>
+          </div>
+          <div class="rating-buttons" data-criterion="controles">
+            <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Difícil</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Regular</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Aceptable</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Bueno</span></button>
+            <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)" data-val="5"><span class="num">5</span><span class="desc">Excelente</span></button>
+          </div>
         </div>
-        <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:8px">¿El rostro y vestimenta de aTthan se perciben limpios, nítidos y sin distorsiones?</p>
-        <div class="rating-buttons" data-metric="personaje_acabado">
-          <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Deficiente</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Regular</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Aceptable</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Notable</span></button>
-          <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)"><span class="num">5</span><span class="desc">Excelente</span></button>
+
+        <!-- Criterio 2: Cámara Orbital 360° -->
+        <div class="likert-item">
+          <div class="likert-header">
+            <span class="likert-title">2. Suavidad y Respuesta de la Cámara Orbital con el Ratón</span>
+            <span class="likert-badge">Perspectiva</span>
+          </div>
+          <div class="rating-buttons" data-criterion="camara">
+            <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Brusca</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Lenta</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Normal</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Fluida</span></button>
+            <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)" data-val="5"><span class="num">5</span><span class="desc">Muy Cómoda</span></button>
+          </div>
+        </div>
+
+        <!-- Criterio 3: Lancha Rápida e Isla -->
+        <div class="likert-item">
+          <div class="likert-header">
+            <span class="likert-title">3. Navegación en Lancha y Exploración de la Isla</span>
+            <span class="likert-badge">Exploración 3D</span>
+          </div>
+          <div class="rating-buttons" data-criterion="lancha_isla">
+            <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Con Fallos</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Inestable</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Funcional</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Divertida</span></button>
+            <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)" data-val="5"><span class="num">5</span><span class="desc">Impecable</span></button>
+          </div>
+        </div>
+
+        <!-- Criterio 4: Identidad Cultural y Marimba -->
+        <div class="likert-item">
+          <div class="likert-header">
+            <span class="likert-title">4. Identidad Cultural, Música del Pacífico y Ambientación</span>
+            <span class="likert-badge">Cultura & Arte</span>
+          </div>
+          <div class="rating-buttons" data-criterion="cultura">
+            <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Baja</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Poco Clara</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Representativa</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Muy Buena</span></button>
+            <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)" data-val="5"><span class="num">5</span><span class="desc">Auténtica</span></button>
+          </div>
+        </div>
+
+        <!-- Criterio 5: Rendimiento Técnico y Gráficos -->
+        <div class="likert-item">
+          <div class="likert-header">
+            <span class="likert-title">5. Rendimiento en el Navegador, Estabilidad y Carga</span>
+            <span class="likert-badge">Rendimiento WebGL</span>
+          </div>
+          <div class="rating-buttons" data-criterion="rendimiento">
+            <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Lento</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Tirones</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Estable</span></button>
+            <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Rápido</span></button>
+            <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)" data-val="5"><span class="num">5</span><span class="desc">Súper Fluido</span></button>
+          </div>
         </div>
       </div>
 
-      <!-- Ítem 3 -->
-      <div class="likert-item" data-id="q3">
-        <div class="likert-header">
-          <span class="likert-title">3. Interacción en la NUEVA Zona de Percusión del Pacífico</span>
-          <span class="likert-badge">Mecánica Sonora</span>
-        </div>
-        <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:8px">¿La respuesta musical de la Marimba de Chonta y percusión fue atractiva e instantánea?</p>
-        <div class="rating-buttons" data-metric="zona_percursion">
-          <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Mala</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Baja</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Media</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Alta</span></button>
-          <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)"><span class="num">5</span><span class="desc">Sobresaliente</span></button>
-        </div>
-      </div>
-
-      <!-- Ítem 4 -->
-      <div class="likert-item" data-id="q4">
-        <div class="likert-header">
-          <span class="likert-title">4. Identidad Cultural y Representación de Buenaventura</span>
-          <span class="likert-badge">Cultura</span>
-        </div>
-        <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:8px">¿El escenario transmite con respeto y fidelidad el patrimonio cultural del Pacífico?</p>
-        <div class="rating-buttons" data-metric="identidad_cultural">
-          <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Nada</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Poco</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Moderado</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Alto</span></button>
-          <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)"><span class="num">5</span><span class="desc">Totalmente</span></button>
+      <!-- Bloque D: Comparativa Directa entre Versiones -->
+      <div class="form-group" style="margin-top: 20px;">
+        <label>Comparativa directa: ¿Qué versión te brindó la mejor experiencia?</label>
+        <div class="radio-group">
+          <label class="radio-card selected" onclick="selectRadio(this)">
+            <input type="radio" name="preferencia_version" value="v2" checked>
+            <div>
+              <strong style="color:var(--ocre);">Versión 2.0 (Recomendada):</strong>
+              <span style="display:block; font-size:0.84rem; color:var(--text-muted)">Menú inicial de selección, exploración completa en la isla sin bugs, salto de ballena y personaje sentado en la lancha.</span>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="preferencia_version" value="v1">
+            <div>
+              <strong style="color:#fff;">Versión 1.0 (Anterior):</strong>
+              <span style="display:block; font-size:0.84rem; color:var(--text-muted)">Prototipo básico de exploración en la plazoleta.</span>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="preferencia_version" value="ambas">
+            <div>
+              <strong style="color:#fff;">Ambas versiones aportan elementos valiosos</strong>
+              <span style="display:block; font-size:0.84rem; color:var(--text-muted)">Se nota claramente la evolución positiva hacia la versión 2.0.</span>
+            </div>
+          </label>
         </div>
       </div>
 
-      <!-- Ítem 5 -->
-      <div class="likert-item" data-id="q5">
-        <div class="likert-header">
-          <span class="likert-title">5. Rendimiento y Fluidez en el Navegador (WebGL)</span>
-          <span class="likert-badge">Técnico</span>
-        </div>
-        <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:8px">¿El juego cargó rápido y funcionó fluido sin trabarse ni generar tirones?</p>
-        <div class="rating-buttons" data-metric="rendimiento_webgl">
-          <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Lento</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Pesado</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Decente</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Fluido</span></button>
-          <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)"><span class="num">5</span><span class="desc">Ultra Fluido</span></button>
-        </div>
+      <!-- Bloque E: Comentarios y Recomendaciones -->
+      <div class="form-group" style="margin-top: 18px;">
+        <label for="eval-feedback">¿Qué fue lo que más te gustó y qué sugerencias darías para mejorar el juego?</label>
+        <textarea id="eval-feedback" rows="4" placeholder="Escribe aquí tu opinión sincera sobre la música, el personaje, la lancha o cualquier detalle que te gustaría ver en futuras actualizaciones..."></textarea>
       </div>
 
-      <!-- Ítem 6 -->
-      <div class="likert-item" data-id="q6">
-        <div class="likert-header">
-          <span class="likert-title">6. Comparativa Global A/B (v2.0 frente a v1.0)</span>
-          <span class="likert-badge">Evolución</span>
-        </div>
-        <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:8px">¿La versión 2.0 optimizada representa una mejora clara e integral frente a la inicial?</p>
-        <div class="rating-buttons" data-metric="comparacion_ab">
-          <button type="button" class="rate-btn" onclick="selectRate(this, 1)"><span class="num">1</span><span class="desc">Sin cambio</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 2)"><span class="num">2</span><span class="desc">Poco mejor</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 3)"><span class="num">3</span><span class="desc">Mejora media</span></button>
-          <button type="button" class="rate-btn" onclick="selectRate(this, 4)"><span class="num">4</span><span class="desc">Gran mejora</span></button>
-          <button type="button" class="rate-btn selected" onclick="selectRate(this, 5)"><span class="num">5</span><span class="desc">Muy superior</span></button>
-        </div>
+      <!-- Botón de Envío -->
+      <div class="submit-container">
+        <button type="submit" id="btn-submit-eval" class="btn-submit">
+          <span>🚀</span>
+          <span>ENVIAR EVALUACIÓN DE JUEGO</span>
+        </button>
       </div>
-    </section>
-
-    <!-- Card 5: Retroalimentación Cualitativa Abierta -->
-    <section class="card">
-      <div class="card-title">
-        <span class="icon">💬</span>
-        <h2>5. Retroalimentación Cualitativa (Tus Palabras)</h2>
-      </div>
-      <p class="card-subtitle">Tus comentarios sustentarán directamente el capítulo de mejoras del informe final:</p>
-
-      <div class="form-group">
-        <label for="fb-changes">1. ¿Qué mejoras o cambios principales notaste en la versión 2.0? <span class="req">*</span></label>
-        <textarea id="fb-changes" class="form-control" placeholder="Ej. El personaje se ve mucho más definido en su rostro, la zona de percusión suena genial y la navegación es más fluida..." required></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="fb-percussion">2. ¿Qué sensación te generó interactuar en la nueva Zona de Percusión (Marimba y ritmo)?</label>
-        <textarea id="fb-percussion" class="form-control" placeholder="Ej. Muy inmersiva, da ganas de quedarse tocando notas al caminar sobre las tablas..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="fb-suggestions">3. ¿Qué sugerencia, detalle o nueva mecánica agregarías a futuro?</label>
-        <textarea id="fb-suggestions" class="form-control" placeholder="Ej. Me gustaría poder bailar o tener música ambiental de fondo típica del Pacífico..."></textarea>
-      </div>
-
-      <!-- Consentimiento -->
-      <div style="margin-top:16px; padding:12px; background:rgba(0,0,0,0.3); border-radius:var(--radius-sm); font-size:0.82rem; color:var(--text-muted)">
-        <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer">
-          <input type="checkbox" id="consent-check" checked required style="margin-top:3px">
-          <span><strong>Consentimiento informado UNAD:</strong> Autorizo el tratamiento anónimo y consolidado de mis respuestas con fines estrictamente académicos para la validación de la Fase 4 del curso Proyecto de Ingeniería I - TIC.</span>
-        </label>
-      </div>
-    </section>
-
-    <!-- Botón Enviar -->
-    <div class="submit-container">
-      <button type="submit" class="btn-submit" id="btn-submit-eval">
-        <span>🚀</span>
-        <span>ENVIAR EVALUACIÓN EN TIEMPO REAL</span>
-      </button>
-      <p style="margin-top:10px; font-size:0.82rem; color:var(--text-muted)">Se guardará en la nube de Firebase y quedará registrada en el sistema de la UNAD.</p>
-    </div>
-
-  </form>
+    </form>
+  </section>
 
 </div>
 
-<!-- Modal de Éxito -->
+<!-- Modal de Éxito al Enviar -->
 <div id="modal-success" class="modal-backdrop" hidden>
   <div class="modal-box">
-    <div style="font-size:3rem">🎉</div>
+    <div style="font-size: 3.5rem;">🎉</div>
     <h3>¡Evaluación Registrada con Éxito!</h3>
-    <p>Tus respuestas han sido sincronizadas en tiempo real en la base de datos de Firebase. Muchas gracias por contribuir a la validación de la <strong>Plazoleta CAN Buenaventura 3D</strong>.</p>
-    
-    <div style="display:flex; flex-direction:column; gap:10px">
-      <button type="button" class="btn-game-primary" onclick="downloadReceiptPDF()" style="font-size:0.95rem; padding:12px; background:linear-gradient(135deg, #005883 0%, #00a8ff 100%)">
-        <span>📄</span> <span>Descargar Ficha Oficial en PDF (UNAD)</span>
+    <p>Muchas gracias por probar <strong>Buenaventura: Palafitos de la Vida 3D</strong> y compartir tus comentarios. Tu feedback queda guardado inmediatamente en el sistema para seguir optimizando la experiencia.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn-modal-primary" onclick="closeModalSuccess()">
+        <span>✓</span> Continuar Jugando
       </button>
-      <button type="button" class="btn-game-secondary" onclick="downloadReceiptJSON()" style="font-size:0.85rem; padding:10px">
-        <span>📋</span> <span>Descargar Comprobante (JSON)</span>
-      </button>
-      <button type="button" class="btn-game-secondary" onclick="location.reload()" style="font-size:0.85rem; padding:8px; opacity:0.8">
-        <span>🔄</span> <span>Registrar Otra Evaluación</span>
+      <button type="button" class="btn-modal-secondary" onclick="exportEvaluationPDF()">
+        <span>📄</span> Descargar Resumen
       </button>
     </div>
   </div>
 </div>
 
-<!-- Botón Flotante Admin -->
-<button type="button" class="btn-admin-float" id="btn-open-admin">
-  <span>🔐</span>
-  <span>Ver Respuestas (<span id="admin-count">0</span>)</span>
+<!-- Botón Flotante para Ver Evaluaciones Recibidas -->
+<button type="button" class="btn-admin-float" onclick="openAdminModal()">
+  <span>📊</span> Ver Respuestas (<span id="btn-count">0</span>)
 </button>
 
-<!-- Modal Administrador -->
+<!-- Modal Administrador de Respuestas -->
 <div id="modal-admin" class="modal-backdrop" hidden>
   <div class="modal-box">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
-      <h3 style="margin:0; font-size:1.4rem">📊 Panel en Vivo de Evaluaciones (UNAD Fase 4)</h3>
-      <button type="button" onclick="closeAdmin()" style="background:none; border:0; color:#fff; font-size:1.6rem; cursor:pointer">&times;</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid var(--border-glass); padding-bottom:10px;">
+      <h3 style="margin:0; font-size:1.3rem;">📊 Evaluaciones de Jugadores en Vivo</h3>
+      <button type="button" onclick="closeAdminModal()" style="background:none; border:0; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
     </div>
-    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px">Conectado a Firebase Realtime Database: <code style="color:var(--accent-gold)">balotera-3981a / unad_fase4_evaluaciones</code></p>
-    
-    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px">
-      <button type="button" class="btn-game-primary" onclick="exportToCSV()" style="padding:10px 18px; font-size:0.9rem">
-        <span>📥</span> <span>Descargar Tabla para Informe UNAD (CSV / Excel)</span>
-      </button>
-      <button type="button" class="btn-game-secondary" onclick="refreshAdminData()" style="padding:10px 14px; font-size:0.9rem">
-        <span>🔄</span> <span>Actualizar</span>
-      </button>
-    </div>
-
     <div class="table-responsive">
-      <table class="admin-table" id="admin-table">
+      <table class="admin-table">
         <thead>
           <tr>
-            <th>#</th>
             <th>Fecha</th>
-            <th>Nombre</th>
-            <th>Edad/Rol</th>
-            <th>Promedio</th>
-            <th>Percusión</th>
-            <th>Opinión A/B</th>
-            <th>PDF</th>
+            <th>Jugador</th>
+            <th>Dispositivo</th>
+            <th>Versión Preferida</th>
+            <th>Promedio Calificación</th>
+            <th>Comentarios</th>
           </tr>
         </thead>
-        <tbody id="admin-tbody">
-          <tr><td colspan="7" style="text-align:center; padding:20px">Cargando evaluaciones desde Firebase...</td></tr>
+        <tbody id="admin-table-body">
+          <tr><td colspan="6" style="text-align:center; padding:18px;">Cargando respuestas...</td></tr>
         </tbody>
       </table>
     </div>
@@ -1106,17 +1157,17 @@ try {
   firebase.initializeApp(firebaseConfig);
   db = firebase.database();
 } catch(err) {
-  console.error("Firebase init:", err);
+  console.warn("Firebase init:", err);
 }
 
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 
-// Detectar dispositivo y navegador
+// Detectar dispositivo y navegador automáticamente
 const deviceInput = $("#eval-device");
 if (deviceInput) {
   const ua = navigator.userAgent;
-  let os = "PC / Desktop";
+  let os = "PC / Escritorio";
   if (/Android/i.test(ua)) os = "Android Móvil";
   else if (/iPhone|iPad/i.test(ua)) os = "iOS Móvil";
   else if (/Windows/i.test(ua)) os = "Windows PC";
@@ -1131,7 +1182,49 @@ if (deviceInput) {
   deviceInput.value = `${os} (${browser})`;
 }
 
-/* ---------- Selección de Calificación Likert ---------- */
+/* ---------- Control del Visor de Videojuego (Ambas Versiones) ---------- */
+let currentVersion = "v2";
+
+window.switchGameVersion = function(ver) {
+  currentVersion = ver;
+  const iframe = $("#game-iframe");
+  const tabV2 = $("#tab-v2");
+  const tabV1 = $("#tab-v1");
+  const statusText = $("#status-info-text");
+  const extLink = $("#btn-external-link");
+
+  if (ver === "v2") {
+    tabV2.classList.add("active");
+    tabV1.classList.remove("active");
+    iframe.src = "index.html";
+    extLink.href = "index.html";
+    statusText.innerHTML = "<span>🟢</span> <span>Ejecutando: <strong>Versión 2.0</strong> (Con Isla del Bombo, Salto de Ballena y Lancha Tripulada)</span>";
+  } else {
+    tabV1.classList.add("active");
+    tabV2.classList.remove("active");
+    iframe.src = "v1/index.html";
+    extLink.href = "v1/index.html";
+    statusText.innerHTML = "<span>🟡</span> <span>Ejecutando: <strong>Versión 1.0</strong> (Versión Inicial / Comparativa A/B)</span>";
+  }
+};
+
+window.reloadGameIframe = function() {
+  const iframe = $("#game-iframe");
+  iframe.src = iframe.src;
+};
+
+window.toggleFullscreen = function() {
+  const box = $("#iframe-box");
+  if (!document.fullscreenElement) {
+    if (box.requestFullscreen) box.requestFullscreen();
+    else if (box.webkitRequestFullscreen) box.webkitRequestFullscreen();
+    else if (box.msRequestFullscreen) box.msRequestFullscreen();
+  } else {
+    if (document.exitFullscreen) document.exitFullscreen();
+  }
+};
+
+/* ---------- Calificaciones Likert 1 a 5 ---------- */
 window.selectRate = function(btn, val) {
   const parent = btn.closest(".rating-buttons");
   parent.querySelectorAll(".rate-btn").forEach(b => b.classList.remove("selected"));
@@ -1146,7 +1239,16 @@ window.toggleCheck = function(card) {
   card.classList.toggle("checked", cb.checked);
 };
 
-/* ---------- Enviar Evaluación a Firebase ---------- */
+/* ---------- Selección Radio Card ---------- */
+window.selectRadio = function(card) {
+  const group = card.closest(".radio-group");
+  group.querySelectorAll(".radio-card").forEach(c => c.classList.remove("selected"));
+  card.classList.add("selected");
+  const radio = card.querySelector('input[type="radio"]');
+  if (radio) radio.checked = true;
+};
+
+/* ---------- Enviar Evaluación ---------- */
 let lastSubmittedPayload = null;
 
 $("#evaluation-form").addEventListener("submit", async e => {
@@ -1154,355 +1256,230 @@ $("#evaluation-form").addEventListener("submit", async e => {
   
   const submitBtn = $("#btn-submit-eval");
   submitBtn.disabled = true;
-  submitBtn.innerHTML = "<span>⏳</span> <span>Guardando en Firebase...</span>";
+  submitBtn.innerHTML = "<span>⏳</span> <span>Guardando evaluación...</span>";
   
   // Recolectar datos
   const nombre = $("#eval-name").value.trim();
-  const edadRol = $("#eval-age").value.trim();
-  const nivelGamer = $("#eval-gamer").value;
   const dispositivo = $("#eval-device").value;
+  const edad = $("#eval-age").value;
+  const nivelGamer = $("#eval-gamer").value;
   
-  // Misiones
-  const misiones = Array.from($$('input[name="mision"]:checked')).map(cb => cb.value);
+  const misiones = [];
+  $$('input[name="misiones"]:checked').forEach(cb => misiones.push(cb.value));
   
-  // Calificaciones
-  const metrics = {};
-  let totalScore = 0;
-  let countScore = 0;
-  
+  const calificaciones = {};
   $$(".rating-buttons").forEach(rb => {
-    const metricName = rb.dataset.metric;
+    const crit = rb.dataset.criterion;
     const sel = rb.querySelector(".rate-btn.selected");
-    const val = sel ? parseInt(sel.querySelector(".num").textContent, 10) : 5;
-    metrics[metricName] = val;
-    totalScore += val;
-    countScore++;
+    calificaciones[crit] = sel ? parseInt(sel.dataset.val || sel.querySelector(".num").textContent, 10) : 5;
   });
   
-  const promedio = countScore ? (totalScore / countScore).toFixed(1) : "5.0";
+  let preferencia = "v2";
+  const selRadio = $('input[name="preferencia_version"]:checked');
+  if (selRadio) preferencia = selRadio.value;
   
-  // Preguntas abiertas
-  const fbChanges = $("#fb-changes").value.trim();
-  const fbPercussion = $("#fb-percussion").value.trim();
-  const fbSuggestions = $("#fb-suggestions").value.trim();
+  const feedback = $("#eval-feedback").value.trim();
   
   const payload = {
-    fecha: new Date().toLocaleString("es-CO", { timeZone: "America/Bogota" }),
-    timestamp: Date.now(),
+    fecha: new Date().toISOString(),
+    fechaLegible: new Date().toLocaleString("es-CO"),
     nombre,
-    edadRol,
-    nivelGamer,
     dispositivo,
+    edad,
+    nivelGamer,
     misiones,
-    calificaciones: metrics,
-    promedio: parseFloat(promedio),
-    fbChanges,
-    fbPercussion,
-    fbSuggestions
+    calificaciones,
+    preferencia,
+    feedback: feedback || "Sin comentarios adicionales"
   };
   
   lastSubmittedPayload = payload;
   
   try {
     if (db) {
-      await db.ref("unad_fase4_evaluaciones").push(payload);
-    } else {
-      // Guardado local de respaldo si no hay red
-      const locals = JSON.parse(localStorage.getItem("unad_evaluaciones") || "[]");
-      locals.push(payload);
-      localStorage.setItem("unad_evaluaciones", JSON.stringify(locals));
+      await db.ref("evaluaciones_jugadores").push(payload);
     }
     
-    // Animación de éxito
+    // Guardado de respaldo en localStorage
+    const locales = JSON.parse(localStorage.getItem("evaluaciones_buenaventura") || "[]");
+    locales.push(payload);
+    localStorage.setItem("evaluaciones_buenaventura", JSON.stringify(locales));
+    
+    // Confeti
     if (window.confetti) {
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      confetti({ particleCount: 110, spread: 80, origin: { y: 0.6 } });
     }
     
     $("#modal-success").hidden = false;
-    submitBtn.innerHTML = "<span>✓</span> <span>¡EVALUACIÓN ENVIADA!</span>";
+    submitBtn.innerHTML = "<span>✓</span> <span>¡EVALUACIÓN ENVIADA CON ÉXITO!</span>";
     
   } catch(err) {
-    alert("Error enviando la evaluación: " + err.message);
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = "<span>🚀</span> <span>Reintentar Envío</span>";
+    console.error("Error guardando en Firebase:", err);
+    // Guardar al menos localmente
+    const locales = JSON.parse(localStorage.getItem("evaluaciones_buenaventura") || "[]");
+    locales.push(payload);
+    localStorage.setItem("evaluaciones_buenaventura", JSON.stringify(locales));
+    
+    if (window.confetti) {
+      confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+    }
+    $("#modal-success").hidden = false;
+    submitBtn.innerHTML = "<span>✓</span> <span>¡GUARDADO LOCALMENTE!</span>";
   }
 });
 
-window.generateUNADTemplateHTML = function(p) {
-  const c = p.calificaciones || {};
-  const misionesList = (p.misiones || []).map(m => {
-    const map = {
-      locomocion: "Locomoción WASD y Cámara 360°",
-      personaje: "Inspección Estética aTthan 2.0 (Rostro y Atuendo)",
-      percursion: "NUEVA Zona de Percusión Tradicional del Pacífico",
-      trafico: "Reactividad Urbana y Tráfico Vehicular"
-    };
-    return map[m] || m;
-  }).map(m => `<li>${m}</li>`).join("");
+window.closeModalSuccess = function() {
+  $("#modal-success").hidden = true;
+};
 
-  return `
-  <div style="font-family:Arial,Helvetica,sans-serif; color:#222; padding:30px; line-height:1.4; background:#fff">
-    <div style="text-align:center; border-bottom:2px solid #005883; padding-bottom:12px; margin-bottom:16px">
-      <h2 style="color:#005883; margin:0; font-size:16pt">UNIVERSIDAD NACIONAL ABIERTA Y A DISTANCIA – UNAD</h2>
-      <p style="margin:4px 0; color:#555; font-size:10pt">Escuela de Ciencias Básicas, Tecnología e Ingeniería (ECBTI) • Ingeniería Multimedia</p>
-      <p style="margin:2px 0; color:#005883; font-weight:bold; font-size:11pt">Curso: Proyecto de Ingeniería I - TIC (Código: 202456921)</p>
-      <h3 style="color:#e06a00; margin:10px 0 4px; font-size:13pt">FICHA TÉCNICA INDIVIDUAL DE VALIDACIÓN CON USUARIOS (FASE 4 - RAC 4)</h3>
-      <p style="margin:0; font-size:9.5pt; color:#444">Prototipo Interactivo 3D: Plazoleta CAN Buenaventura (Versión 2.0 Optimizada)</p>
+/* ---------- Exportar Reporte de Evaluación ---------- */
+window.exportEvaluationPDF = function() {
+  if (!lastSubmittedPayload) return;
+  const p = lastSubmittedPayload;
+  const c = p.calificaciones || {};
+  
+  const htmlContent = `
+  <div style="font-family:Arial,sans-serif; color:#222; padding:30px; line-height:1.4; background:#fff">
+    <div style="text-align:center; border-bottom:2px solid #1E4D2B; padding-bottom:12px; margin-bottom:16px">
+      <h2 style="color:#1E4D2B; margin:0; font-size:16pt">BUENAVENTURA: PALAFITOS DE LA VIDA 3D</h2>
+      <h3 style="color:#D49B35; margin:6px 0 2px; font-size:13pt">FICHA OFICIAL DE EVALUACIÓN DE JUGADORES</h3>
+      <p style="margin:0; font-size:9pt; color:#666">Fecha: ${p.fechaLegible || new Date().toLocaleString()}</p>
     </div>
 
-    <table style="width:100%; border-collapse:collapse; margin-bottom:16px; font-size:9pt">
+    <table style="width:100%; border-collapse:collapse; margin-bottom:16px; font-size:9.5pt">
       <tr style="background:#f4f6f8">
-        <td style="padding:6px 10px; border:1px solid #ccd; font-weight:bold; width:30%; color:#005883">Evaluador(a):</td>
+        <td style="padding:6px 10px; border:1px solid #ccd; font-weight:bold; width:30%; color:#1E4D2B">Jugador / Nickname:</td>
         <td style="padding:6px 10px; border:1px solid #ccd">${p.nombre || 'N/A'}</td>
       </tr>
       <tr>
-        <td style="padding:6px 10px; border:1px solid #ccd; font-weight:bold; color:#005883">Edad y Ocupación:</td>
-        <td style="padding:6px 10px; border:1px solid #ccd">${p.edadRol || 'N/A'}</td>
-      </tr>
-      <tr style="background:#f4f6f8">
-        <td style="padding:6px 10px; border:1px solid #ccd; font-weight:bold; color:#005883">Experiencia Gamer:</td>
-        <td style="padding:6px 10px; border:1px solid #ccd">${p.nivelGamer || 'N/A'}</td>
-      </tr>
-      <tr>
-        <td style="padding:6px 10px; border:1px solid #ccd; font-weight:bold; color:#005883">Dispositivo / Navegador:</td>
+        <td style="padding:6px 10px; border:1px solid #ccd; font-weight:bold; color:#1E4D2B">Dispositivo:</td>
         <td style="padding:6px 10px; border:1px solid #ccd">${p.dispositivo || 'N/A'}</td>
       </tr>
       <tr style="background:#f4f6f8">
-        <td style="padding:6px 10px; border:1px solid #ccd; font-weight:bold; color:#005883">Fecha de Evaluación:</td>
-        <td style="padding:6px 10px; border:1px solid #ccd">${p.fecha || new Date().toLocaleString()}</td>
+        <td style="padding:6px 10px; border:1px solid #ccd; font-weight:bold; color:#1E4D2B">Rango de Edad:</td>
+        <td style="padding:6px 10px; border:1px solid #ccd">${p.edad || 'N/A'}</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 10px; border:1px solid #ccd; font-weight:bold; color:#1E4D2B">Versión Preferida:</td>
+        <td style="padding:6px 10px; border:1px solid #ccd; font-weight:bold; color:#D49B35">${p.preferencia === 'v2' ? 'Versión 2.0 (Actualizada)' : p.preferencia}</td>
       </tr>
     </table>
 
-    <h4 style="color:#005883; margin:12px 0 6px; font-size:10.5pt; border-bottom:1px solid #005883; padding-bottom:3px">1. RESULTADOS CUANTITATIVOS (ESCALA LIKERT 1 A 5)</h4>
-    <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:8.5pt">
-      <tr style="background:#005883; color:#fff; text-align:left">
-        <th style="padding:6px 8px; border:1px solid #005883">Criterio Técnico / Dimensión UX</th>
-        <th style="padding:6px 8px; border:1px solid #005883; text-align:center; width:22%">Calificación</th>
+    <h4 style="color:#1E4D2B; margin:12px 0 6px; font-size:11pt; border-bottom:1px solid #1E4D2B; padding-bottom:3px">RESULTADOS DE CALIFICACIÓN (1 A 5)</h4>
+    <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:9pt">
+      <tr style="background:#1E4D2B; color:#fff">
+        <th style="padding:6px 8px; text-align:left">Criterio Evaluado</th>
+        <th style="padding:6px 8px; text-align:center; width:25%">Puntuación</th>
       </tr>
       <tr>
-        <td style="padding:5px 8px; border:1px solid #ddd">1. Usabilidad de Controles (WASD y Cámara Orbital 360°)</td>
-        <td style="padding:5px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#005883">${c.controles || 5} / 5</td>
+        <td style="padding:6px 8px; border:1px solid #ddd">1. Locomoción y Movimiento de aTthan</td>
+        <td style="padding:6px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#1E4D2B">${c.controles || 5} / 5</td>
       </tr>
       <tr style="background:#f9fbfc">
-        <td style="padding:5px 8px; border:1px solid #ddd">2. Acabado Facial y Modelado del Personaje aTthan 2.0</td>
-        <td style="padding:5px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#005883">${c.personaje_acabado || 5} / 5</td>
+        <td style="padding:6px 8px; border:1px solid #ddd">2. Cámara Orbital 360°</td>
+        <td style="padding:6px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#1E4D2B">${c.camara || 5} / 5</td>
       </tr>
       <tr>
-        <td style="padding:5px 8px; border:1px solid #ddd">3. Interacción en la NUEVA Zona de Percusión (Marimba y ritmo)</td>
-        <td style="padding:5px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#e06a00">${c.zona_percursion || 5} / 5</td>
+        <td style="padding:6px 8px; border:1px solid #ddd">3. Lancha Rápida y Exploración de Isla</td>
+        <td style="padding:6px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#1E4D2B">${c.lancha_isla || 5} / 5</td>
       </tr>
       <tr style="background:#f9fbfc">
-        <td style="padding:5px 8px; border:1px solid #ddd">4. Identidad Cultural y Representación de Buenaventura</td>
-        <td style="padding:5px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#005883">${c.identidad_cultural || 5} / 5</td>
+        <td style="padding:6px 8px; border:1px solid #ddd">4. Identidad Cultural y Marimba de Chonta</td>
+        <td style="padding:6px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#D49B35">${c.cultura || 5} / 5</td>
       </tr>
       <tr>
-        <td style="padding:5px 8px; border:1px solid #ddd">5. Rendimiento y Fluidez en Navegador (Compilación WebGL)</td>
-        <td style="padding:5px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#005883">${c.rendimiento_webgl || 5} / 5</td>
-      </tr>
-      <tr style="background:#f9fbfc">
-        <td style="padding:5px 8px; border:1px solid #ddd">6. Comparativa Global A/B (Evolución de v2.0 frente a v1.0)</td>
-        <td style="padding:5px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#005883">${c.comparacion_ab || 5} / 5</td>
-      </tr>
-      <tr style="background:#eef6fa; font-weight:bold">
-        <td style="padding:6px 8px; border:1px solid #bce; color:#005883">PROMEDIO GLOBAL DE SATISFACCIÓN (SUS / LIKERT):</td>
-        <td style="padding:6px 8px; border:1px solid #bce; text-align:center; font-size:10pt; color:#e06a00">${p.promedio || 5.0} / 5.0</td>
+        <td style="padding:6px 8px; border:1px solid #ddd">5. Rendimiento WebGL en Navegador</td>
+        <td style="padding:6px 8px; border:1px solid #ddd; text-align:center; font-weight:bold; color:#1E4D2B">${c.rendimiento || 5} / 5</td>
       </tr>
     </table>
 
-    <h4 style="color:#005883; margin:10px 0 6px; font-size:10.5pt; border-bottom:1px solid #005883; padding-bottom:3px">2. TAREAS Y MISIONES CUMPLIDAS EN EL ENTORNO</h4>
-    <ul style="font-size:8.5pt; margin:4px 0 12px 20px; color:#333">
-      ${misionesList || '<li>Locomoción, Marimba y Tráfico verificados</li>'}
-    </ul>
-
-    <h4 style="color:#005883; margin:10px 0 6px; font-size:10.5pt; border-bottom:1px solid #005883; padding-bottom:3px">3. RETROALIMENTACIÓN CUALITATIVA DEL USUARIO</h4>
-    <div style="font-size:8.5pt; margin-bottom:12px; color:#333">
-      <p style="margin:4px 0"><strong>• Percepción de Mejoras v2.0 (Antes vs. Después):</strong><br>
-      <span style="color:#444; font-style:italic">${p.fbChanges || 'No registró observaciones adicionales.'}</span></p>
-      
-      <p style="margin:6px 0"><strong>• Experiencia en la NUEVA Zona de Percusión:</strong><br>
-      <span style="color:#444; font-style:italic">${p.fbPercussion || 'Experiencia inmersiva satisfactoria.'}</span></p>
-      
-      <p style="margin:6px 0"><strong>• Sugerencias de Escalabilidad para Futuras Fases:</strong><br>
-      <span style="color:#444; font-style:italic">${p.fbSuggestions || 'Ninguna sugerencia reportada.'}</span></p>
-    </div>
-
-    <div style="margin-top:20px; padding-top:12px; border-top:1px dashed #aaa; display:flex; justify-content:space-between; font-size:8pt; color:#666">
-      <div style="width:45%; text-align:center">
-        <p>_____________________________________</p>
-        <p><strong>${p.nombre || 'Participante'}</strong><br>Consentimiento Ético Informado</p>
-      </div>
-      <div style="width:45%; text-align:center">
-        <p>_____________________________________</p>
-        <p><strong>Malkon Adenir Álvarez Muñoz</strong><br>Estudiante Investigador - UNAD</p>
-      </div>
-    </div>
-  </div>
-  `;
-};
-
-window.downloadReceiptPDF = function(customPayload) {
-  const payload = customPayload || lastSubmittedPayload;
-  if (!payload) {
-    alert("No hay datos de evaluación para generar el PDF.");
-    return;
-  }
+    <h4 style="color:#1E4D2B; margin:12px 0 6px; font-size:11pt; border-bottom:1px solid #1E4D2B; padding-bottom:3px">OPINIÓN Y COMENTARIOS DEL JUGADOR</h4>
+    <p style="background:#f4f6f8; padding:10px 12px; border:1px solid #ccd; border-radius:6px; font-style:italic; font-size:9.5pt">${p.feedback || 'Sin comentarios adicionales.'}</p>
+  </div>`;
   
-  const container = document.createElement("div");
-  container.innerHTML = window.generateUNADTemplateHTML(payload);
-  document.body.appendChild(container);
-  
-  const safeName = (payload.nombre || 'Evaluador').replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ_]/g, '_');
   const opt = {
-    margin: [10, 10, 10, 10],
-    filename: `Ficha_Validacion_UNAD_${safeName}.pdf`,
+    margin: 10,
+    filename: `Evaluacion_Buenaventura3D_${p.nombre.replace(/\s+/g, '_')}.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
   
-  if (window.html2pdf) {
-    html2pdf().set(opt).from(container).save().then(() => {
-      document.body.removeChild(container);
-    }).catch(err => {
-      console.error(err);
-      window.print();
-      document.body.removeChild(container);
-    });
-  } else {
-    window.print();
-    document.body.removeChild(container);
-  }
+  html2pdf().from(htmlContent).set(opt).save();
 };
 
-window.downloadEvaluationPDFById = function(id) {
-  const ev = allEvaluations.find(item => item.id === id);
-  if (ev) {
-    window.downloadReceiptPDF(ev);
-  } else {
-    alert("Evaluación no encontrada.");
-  }
-};
-
-window.downloadReceiptJSON = function() {
-  if (!lastSubmittedPayload) return;
-  const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(lastSubmittedPayload, null, 2));
-  const a = document.createElement("a");
-  a.setAttribute("href", str);
-  a.setAttribute("download", `Evaluacion_UNAD_${lastSubmittedPayload.nombre.replace(/\s+/g, "_")}.json`);
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-};
-
-/* ---------- Escuchar Contador en Tiempo Real ---------- */
+/* ---------- Administrador y Contador en Tiempo Real ---------- */
 let allEvaluations = [];
 
-if (db) {
-  db.ref("unad_fase4_evaluaciones").on("value", snapshot => {
-    const val = snapshot.val() || {};
-    allEvaluations = Object.entries(val).map(([id, item]) => ({ id, ...item }));
-    const count = allEvaluations.length;
-    
-    $("#counter-display").textContent = `${count} registradas`;
-    $("#admin-count").textContent = count;
-    renderAdminTable();
-  });
+function actualizarContador(n) {
+  const c = $("#counter-display");
+  if (c) c.textContent = n;
+  const b = $("#btn-count");
+  if (b) b.textContent = n;
 }
 
-/* ---------- Panel Administrador ---------- */
-$("#btn-open-admin").addEventListener("click", () => {
-  $("#modal-admin").hidden = false;
+if (db) {
+  db.ref("evaluaciones_jugadores").on("value", snapshot => {
+    allEvaluations = [];
+    if (snapshot.exists()) {
+      snapshot.forEach(child => {
+        allEvaluations.push({ id: child.key, ...child.val() });
+      });
+    }
+    actualizarContador(allEvaluations.length);
+    renderAdminTable();
+  }, err => {
+    console.warn("RTDB listen error, usando local:", err);
+    cargarLocales();
+  });
+} else {
+  cargarLocales();
+}
+
+function cargarLocales() {
+  const locales = JSON.parse(localStorage.getItem("evaluaciones_buenaventura") || "[]");
+  allEvaluations = locales;
+  actualizarContador(locales.length);
   renderAdminTable();
-});
-
-window.closeAdmin = function() {
-  $("#modal-admin").hidden = true;
-};
-
-window.refreshAdminData = function() {
-  if (db) {
-    db.ref("unad_fase4_evaluaciones").once("value", snapshot => {
-      const val = snapshot.val() || {};
-      allEvaluations = Object.entries(val).map(([id, item]) => ({ id, ...item }));
-      renderAdminTable();
-    });
-  }
-};
+}
 
 function renderAdminTable() {
-  const tbody = $("#admin-tbody");
+  const tbody = $("#admin-table-body");
   if (!tbody) return;
-  
-  if (!allEvaluations.length) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:18px; color:var(--text-muted)">Aún no hay evaluaciones registradas. ¡Sé el primero en calificar!</td></tr>`;
+  if (allEvaluations.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--text-muted)">Aún no hay evaluaciones registradas. ¡Sé el primero en enviar la tuya!</td></tr>`;
     return;
   }
   
-  tbody.innerHTML = allEvaluations.map((ev, idx) => `
-    <tr>
-      <td><strong>#${idx + 1}</strong></td>
-      <td style="white-space:nowrap; font-size:0.75rem">${ev.fecha || 'N/A'}</td>
-      <td><strong>${ev.nombre || 'Anónimo'}</strong></td>
-      <td>${ev.edadRol || 'N/A'}</td>
-      <td><span style="color:var(--accent-gold); font-weight:800">${ev.promedio || '5.0'} / 5</span></td>
-      <td>${(ev.calificaciones && ev.calificaciones.zona_percursion) || 5}★</td>
-      <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="${ev.fbChanges || ''}">${ev.fbChanges || 'Sin comentarios'}</td>
-      <td><button type="button" onclick="downloadEvaluationPDFById('${ev.id}')" class="btn-game-secondary" style="padding:4px 8px; font-size:0.75rem; border-color:var(--accent-teal)">📄 PDF</button></td>
-    </tr>
-  `).join("");
+  tbody.innerHTML = allEvaluations.slice().reverse().map(e => {
+    const c = e.calificaciones || {};
+    const vals = Object.values(c).map(Number).filter(n => !isNaN(n));
+    const avg = vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1) : "5.0";
+    
+    return `
+      <tr>
+        <td>${e.fechaLegible || (e.fecha ? e.fecha.slice(0,10) : 'Hoy')}</td>
+        <td><strong>${e.nombre || 'Anónimo'}</strong></td>
+        <td>${e.dispositivo || 'PC'}</td>
+        <td style="color:var(--ocre); font-weight:bold">${e.preferencia === 'v2' ? 'Versión 2.0' : e.preferencia}</td>
+        <td>⭐ <strong>${avg}</strong> / 5</td>
+        <td style="max-width:260px; font-size:0.8rem">${e.feedback || '-'}</td>
+      </tr>
+    `;
+  }).join("");
 }
 
-window.exportToCSV = function() {
-  if (!allEvaluations.length) {
-    alert("No hay datos para exportar.");
-    return;
-  }
-  
-  let csv = "ID,Fecha,Nombre,Edad_Rol,Nivel_Gamer,Dispositivo,Promedio_General,Controles,Personaje_2_0,Zona_Percusion,Identidad_Cultural,Rendimiento_WebGL,Comparacion_AB,Comentarios_Cambios,Comentarios_Percusion,Sugerencias\n";
-  
-  allEvaluations.forEach((ev, i) => {
-    const c = ev.calificaciones || {};
-    const clean = s => `"${(s || '').replace(/"/g, '""')}"`;
-    
-    csv += [
-      i + 1,
-      clean(ev.fecha),
-      clean(ev.nombre),
-      clean(ev.edadRol),
-      clean(ev.nivelGamer),
-      clean(ev.dispositivo),
-      ev.promedio || 5,
-      c.controles || 5,
-      c.personaje_acabado || 5,
-      c.zona_percursion || 5,
-      c.identidad_cultural || 5,
-      c.rendimiento_webgl || 5,
-      c.comparacion_ab || 5,
-      clean(ev.fbChanges),
-      clean(ev.fbPercussion),
-      clean(ev.fbSuggestions)
-    ].join(",") + "\n";
-  });
-  
-  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `Resultados_Validacion_UNAD_Fase4_${new Date().toISOString().slice(0,10)}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
+window.openAdminModal = function() {
+  renderAdminTable();
+  $("#modal-admin").hidden = false;
 };
 
-// Si se incluye ?admin=1 en la URL, abrir admin automáticamente
-if (new URLSearchParams(window.location.search).get("admin") === "1") {
-  $("#modal-admin").hidden = false;
-}
+window.closeAdminModal = function() {
+  $("#modal-admin").hidden = true;
+};
 
 })();
 </script>
 
 </body>
 </html>
-
-
