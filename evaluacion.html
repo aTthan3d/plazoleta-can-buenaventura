@@ -607,11 +607,14 @@ header p.sub {
   inset: 0;
   background: rgba(4, 8, 10, 0.88);
   backdrop-filter: blur(8px);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 16px;
-  z-index: 100;
+  z-index: 1000;
+}
+.modal-backdrop.active {
+  display: flex !important;
 }
 .modal-box {
   background: #0d1715;
@@ -1088,7 +1091,7 @@ table.admin-table tr:nth-child(even) {
 </div>
 
 <!-- Modal de Éxito al Enviar -->
-<div id="modal-success" class="modal-backdrop" hidden>
+<div id="modal-success" class="modal-backdrop" style="display: none;">
   <div class="modal-box">
     <div style="font-size: 3.5rem;">🎉</div>
     <h3>¡Evaluación Registrada con Éxito!</h3>
@@ -1104,17 +1107,12 @@ table.admin-table tr:nth-child(even) {
   </div>
 </div>
 
-<!-- Botón Flotante para Ver Evaluaciones Recibidas -->
-<button type="button" class="btn-admin-float" onclick="openAdminModal()">
-  <span>📊</span> Ver Respuestas (<span id="btn-count">0</span>)
-</button>
-
 <!-- Modal Administrador de Respuestas -->
-<div id="modal-admin" class="modal-backdrop" hidden>
+<div id="modal-admin" class="modal-backdrop" style="display: none;">
   <div class="modal-box">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid var(--border-glass); padding-bottom:10px;">
-      <h3 style="margin:0; font-size:1.3rem;">📊 Evaluaciones de Jugadores en Vivo</h3>
-      <button type="button" onclick="closeAdminModal()" style="background:none; border:0; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+      <h3 style="margin:0; font-size:1.3rem; color:var(--ocre);">📊 Evaluaciones de Jugadores en Vivo</h3>
+      <button type="button" onclick="closeAdminModal()" style="background:rgba(255,255,255,0.1); border:1px solid var(--border-glass); border-radius:6px; color:#fff; font-size:0.9rem; padding:6px 12px; cursor:pointer; font-weight:bold;">Cerrar ✕</button>
     </div>
     <div class="table-responsive">
       <table class="admin-table">
@@ -1132,6 +1130,9 @@ table.admin-table tr:nth-child(even) {
           <tr><td colspan="6" style="text-align:center; padding:18px;">Cargando respuestas...</td></tr>
         </tbody>
       </table>
+    </div>
+    <div style="text-align:right; margin-top:14px;">
+      <button type="button" onclick="closeAdminModal()" style="background:var(--ocre); color:#000; border:0; border-radius:6px; padding:8px 18px; font-weight:bold; cursor:pointer;">Entendido, Volver al Formulario</button>
     </div>
   </div>
 </div>
@@ -1310,7 +1311,11 @@ $("#evaluation-form").addEventListener("submit", async e => {
       confetti({ particleCount: 110, spread: 80, origin: { y: 0.6 } });
     }
     
-    $("#modal-success").hidden = false;
+    const mSuccess = document.getElementById("modal-success");
+    if (mSuccess) {
+      mSuccess.style.display = "flex";
+      mSuccess.classList.add("active");
+    }
     submitBtn.innerHTML = "<span>✓</span> <span>¡EVALUACIÓN ENVIADA CON ÉXITO!</span>";
     
   } catch(err) {
@@ -1323,13 +1328,21 @@ $("#evaluation-form").addEventListener("submit", async e => {
     if (window.confetti) {
       confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
     }
-    $("#modal-success").hidden = false;
+    const mSuccess = document.getElementById("modal-success");
+    if (mSuccess) {
+      mSuccess.style.display = "flex";
+      mSuccess.classList.add("active");
+    }
     submitBtn.innerHTML = "<span>✓</span> <span>¡GUARDADO LOCALMENTE!</span>";
   }
 });
 
 window.closeModalSuccess = function() {
-  $("#modal-success").hidden = true;
+  const m = document.getElementById("modal-success");
+  if (m) {
+    m.style.display = "none";
+    m.classList.remove("active");
+  }
 };
 
 /* ---------- Exportar Reporte de Evaluación ---------- */
@@ -1471,12 +1484,40 @@ function renderAdminTable() {
 
 window.openAdminModal = function() {
   renderAdminTable();
-  $("#modal-admin").hidden = false;
+  const m = document.getElementById("modal-admin");
+  if (m) {
+    m.style.display = "flex";
+    m.classList.add("active");
+  }
 };
 
 window.closeAdminModal = function() {
-  $("#modal-admin").hidden = true;
+  const m = document.getElementById("modal-admin");
+  if (m) {
+    m.style.display = "none";
+    m.classList.remove("active");
+  }
 };
+
+// Cerrar modales al hacer clic en el fondo oscuro
+document.addEventListener("click", function(e) {
+  const modalSuccess = document.getElementById("modal-success");
+  if (modalSuccess && e.target === modalSuccess) {
+    closeModalSuccess();
+  }
+  const modalAdmin = document.getElementById("modal-admin");
+  if (modalAdmin && e.target === modalAdmin) {
+    closeAdminModal();
+  }
+});
+
+// Cerrar modales con la tecla Escape
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") {
+    closeModalSuccess();
+    closeAdminModal();
+  }
+});
 
 })();
 </script>
