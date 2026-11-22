@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teleprompter de Pronunciación - Fase 4 Malkon Álvarez</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(20, 27, 45, 0.85);
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.4);
+      --cue-color: #f59e0b;
+      --phonetic-color: #38bdf8;
+      --english-color: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Fixed Top Control Bar */
+    .controls-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(9, 13, 22, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .title-group h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-group p {
+      font-size: 0.8rem;
+      color: var(--english-color);
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid #334155;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background: #334155;
+      border-color: #475569;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #064e3b;
+      border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    button.primary:hover {
+      background: #059669;
+      color: #fff;
+    }
+
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--english-color);
+      background: #1e293b;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+    }
+
+    .speed-control input[type="range"] {
+      cursor: pointer;
+      width: 100px;
+      accent-color: var(--accent);
+    }
+
+    /* Reading Progress Bar */
+    .progress-line {
+      position: fixed;
+      top: 68px;
+      left: 0;
+      height: 4px;
+      background: var(--accent);
+      width: 0%;
+      z-index: 999;
+      transition: width 0.1s linear;
+    }
+
+    /* Teleprompter Content */
+    .prompter-container {
+      max-width: 900px;
+      margin: 90px auto 180px auto;
+      padding: 24px;
+    }
+
+    .reading-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .reading-card:hover {
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .cue-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--cue-color);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 18px;
+    }
+
+    /* How to Pronounce Text (Main Focus) */
+    .phonetic-text {
+      font-size: var(--font-size, 1.65rem);
+      font-weight: 700;
+      color: #38bdf8;
+      line-height: 1.55;
+      margin-bottom: 16px;
+      letter-spacing: 0.2px;
+    }
+
+    .phonetic-text span.keyword {
+      color: #facc15;
+      background: rgba(250, 204, 21, 0.12);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    /* English Original (Reference) */
+    .english-text {
+      font-size: calc(var(--font-size, 1.65rem) * 0.65);
+      color: #94a3b8;
+      font-style: italic;
+      border-left: 3px solid rgba(148, 163, 184, 0.3);
+      padding-left: 14px;
+      margin-top: 12px;
+    }
+
+    /* Floating Status Pill */
+    .status-indicator {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #334155;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+
+    .status-dot.active {
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+    }
+
+    /* Eye Focus Guide Line in Center */
+    .focus-guide {
+      position: fixed;
+      top: 45%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.25) 20%, rgba(56, 189, 248, 0.25) 80%, transparent);
+      pointer-events: none;
+      z-index: 500;
+    }
+
+    @media (max-width: 768px) {
+      .controls-bar {
+        padding: 10px 14px;
+      }
+      .phonetic-text {
+        font-size: 1.35rem;
+      }
+      .prompter-container {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Focus Guideline -->
+  <div class="focus-guide"></div>
+
+  <!-- Progress Bar -->
+  <div class="progress-line" id="progressLine"></div>
+
+  <!-- Top Controls Bar -->
+  <header class="controls-bar">
+    <div class="title-group">
+      <h1>🎙️ Teleprompter de Pronunciación</h1>
+      <p>Fase 4 • Proyecto de Ingeniería I (TIC) • Malkon Álvarez</p>
+    </div>
+
+    <div class="btn-group">
+      <button id="btnToggle" class="primary" onclick="toggleScroll()">
+        <span id="playIcon">▶</span> <span id="btnText">Iniciar (Espacio)</span>
+      </button>
+      <button onclick="resetScroll()">↺ Reiniciar</button>
+      
+      <div class="speed-control">
+        <span>Velocidad:</span>
+        <input type="range" id="speedSlider" min="1" max="10" value="4" oninput="updateSpeed(this.value)">
+        <span id="speedValue">4x</span>
+      </div>
+
+      <button onclick="adjustFontSize(1)">A+</button>
+      <button onclick="adjustFontSize(-1)">A-</button>
+    </div>
+  </header>
+
+  <!-- Teleprompter Flow -->
+  <main class="prompter-container" id="prompter">
+
+    <!-- Card 1 -->
+    <section class="reading-card">
+      <div class="cue-header">🎬 1. PANTALLA: Menú de inicio de Plazoleta CAN Buenaventura</div>
+      <div class="phonetic-text">
+        "Jelou, <span class="keyword">tiutor</span> and <span class="keyword">clasmaits</span>.<br>
+        Mai neim is <span class="keyword">Malkon Álvarez</span>, stiudent of <span class="keyword">Multimidia Enyinirin</span> at UNAD.<br><br>
+        Tudei, ai prisent de fainal risols for <span class="keyword">Feis For</span> of de cors <span class="keyword">Enyinirin Proyect Uan</span>:<br>
+        itereishon, yuser testin, and optimiseishon of auar interactiv zri-di web expiriens: <span class="keyword">Plasoleta CAN Buenaventura</span>."
+      </div>
+      <div class="english-text">
+        Inglés original: "Hello, tutor and classmates. My name is Malkon Álvarez, student of Multimedia Engineering at UNAD. Today, I present the final results for Phase Four of the course Engineering Project One: iteration, user testing, and optimization of our interactive 3D web experience: Plazoleta CAN Buenaventura."
+      </div>
+    </section>
+
+    <!-- Card 2 -->
+    <section class="reading-card">
+      <div class="cue-header">🎬 2. PANTALLA: Muestra v1 brevemente y cambia a v2 con el botón verde</div>
+      <div class="phonetic-text">
+        "In <span class="keyword">Feis Zri</span>, wi pablished auar inishial prototaip, <span class="keyword">Vershon uan point siro</span>.<br><br>
+        Zru erli yuser fidbak, wi aidentifaid ki ishús:<br>
+        camera sensitiviti was tu abrapt, di envaironment felt static, and di avatar nided coltural rifainment.<br><br>
+        Aplain di enyinirin saicol: <span class="keyword">Bild, Meshor, Lern, and Iteréit</span>,<br>
+        wi crieited <span class="keyword">Vershon tu point siro Optimaisd</span>, fuli accesibol onlain zru <span class="keyword">Web-Yi-El</span>."
+      </div>
+      <div class="english-text">
+        Inglés original: "In Phase Three, we published our initial prototype, Version 1.0. Through early user feedback, we identified key issues: camera sensitivity was too abrupt, the environment felt static, and the avatar needed cultural refinement. Applying the engineering cycle: Build, Measure, Learn, and Iterate, we created Version 2.0 Optimized, fully accessible online through WebGL."
+      </div>
+    </section>
+
+    <!-- Card 3 -->
+    <section class="reading-card">
+      <div class="cue-header">🎬 3. PANTALLA: Camina con aTthan, muévete en 360° y corre</div>
+      <div class="phonetic-text">
+        "Nau, let as examin de <span class="keyword">cor tecnical impruvments</span>:<br><br>
+        Ferst, <span class="keyword">Smuz Navigueishon</span>: Wi ricalibreited de zerd-person orbital camera sensitiviti tu <span class="keyword">siro point terti-faiv</span>, enshurin comfortabol exploreishon wizaut moushon sicnes.<br><br>
+        Second, <span class="keyword">Coltural Aidentiti</span>: Auar caracter, <span class="keyword">aTthan</span>, nau fitiurs ozentic feishal modelin, skin texchiurs, and tradishonal Pasific clozin."
+      </div>
+      <div class="english-text">
+        Inglés original: "Now, let us examine the core technical improvements: First, Smooth Navigation: We recalibrated the third-person orbital camera sensitivity to 0.35, ensuring comfortable exploration without motion sickness. Second, Cultural Identity: Our character, aTthan, now features authentic facial modeling, skin textures, and traditional Pacific clothing."
+      </div>
+    </section>
+
+    <!-- Card 4 -->
+    <section class="reading-card">
+      <div class="cue-header">🎬 4. PANTALLA: Sube a la tarima de la Marimba y pisa las teclas</div>
+      <div class="phonetic-text">
+        "Zerd, <span class="keyword">Interactiv Miusic</span>: Wi bilt de Pasific percoshion steiy.<br>
+        Wen wokin over de <span class="keyword">Chonta Marimba</span>, nouts plei wiz rial-taim odio and vishual fidbak.<br><br>
+        And forz, <span class="keyword">Maritaim Mecanics</span>: Pleiers can nau bord a <span class="keyword">spind-bout wiz 'I'</span> tu explor de bei and discaver de <span class="keyword">colosal jamp-bak weil</span>."
+      </div>
+      <div class="english-text">
+        Inglés original: "Third, Interactive Music: We built the Pacific percussion stage. When walking over the Chonta Marimba, notes play with real-time audio and visual feedback. And fourth, Maritime Mechanics: Players can now board a speedboat with 'E' to explore the bay and discover the colossal humpback whale."
+      </div>
+    </section>
+
+    <!-- Card 5 -->
+    <section class="reading-card">
+      <div class="cue-header">🎬 5. PANTALLA: Muestra la página evaluacion.html con encuestas y gráficos</div>
+      <div class="phonetic-text">
+        "Wi valideited dis vershon wiz rial yusers iusin auar onlain <span class="keyword">evalueishon portal</span> and a standerdaisd <span class="keyword">Laikert skeil</span>.<br><br>
+        Partisipants jailaited a <span class="keyword">nainti-faiv percent satisfacshon reit</span> rigardin yusabiliti, coltural aidentiti, and miusical interactiviti.<br><br>
+        Adishonali, Web-Yi-El assets wer comprest, achivin a smuz and steibol <span class="keyword">sixti freims per second</span> on web brausers."
+      </div>
+      <div class="english-text">
+        Inglés original: "We validated this version with real users using our online evaluation portal and a standardized Likert scale. Participants highlighted a 95% satisfaction rate regarding usability, cultural identity, and musical interactivity. Additionally, WebGL assets were compressed, achieving a smooth and stable 60 frames per second on web browsers."
+      </div>
+    </section>
+
+    <!-- Card 6 -->
+    <section class="reading-card">
+      <div class="cue-header">🎬 6. PANTALLA: Vista panorámica final de aTthan mirando el mar</div>
+      <div class="phonetic-text">
+        "In conclushon, <span class="keyword">Feis For</span> succesfuli transforms yuser fidbak intu an optimaisd, interactiv, and colturali mininful web expiriens.<br><br>
+        <span class="keyword">Zank iu veri mach for ior atenshon.</span>"
+      </div>
+      <div class="english-text">
+        Inglés original: "In conclusion, Phase Four successfully transforms user feedback into an optimized, interactive, and culturally meaningful web experience. Thank you very much for your attention."
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating Status Indicator -->
+  <div class="status-indicator">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusLabel">Detenido (Espacio para iniciar)</span>
+  </div>
+
+  <script>
+    let isScrolling = false;
+    let scrollSpeed = 4;
+    let scrollInterval = null;
+    let currentFontSize = 1.65;
+
+    function toggleScroll() {
+      if (isScrolling) {
+        pauseScroll();
+      } else {
+        startScroll();
+      }
+    }
+
+    function startScroll() {
+      isScrolling = true;
+      document.getElementById('btnToggle').classList.remove('primary');
+      document.getElementById('btnToggle').style.background = '#e11d48';
+      document.getElementById('playIcon').textContent = '⏸';
+      document.getElementById('btnText').textContent = 'Pausar (Espacio)';
+      document.getElementById('statusDot').classList.add('active');
+      document.getElementById('statusLabel').textContent = 'Grabando / En Marcha';
+
+      if (scrollInterval) clearInterval(scrollInterval);
+      scrollInterval = setInterval(() => {
+        window.scrollBy(0, 1);
+        updateProgressBar();
+      }, 35 / (scrollSpeed * 0.45));
+    }
+
+    function pauseScroll() {
+      isScrolling = false;
+      document.getElementById('btnToggle').classList.add('primary');
+      document.getElementById('btnToggle').style.background = '';
+      document.getElementById('playIcon').textContent = '▶';
+      document.getElementById('btnText').textContent = 'Reanudar (Espacio)';
+      document.getElementById('statusDot').classList.remove('active');
+      document.getElementById('statusLabel').textContent = 'Pausado (Espacio para continuar)';
+
+      if (scrollInterval) clearInterval(scrollInterval);
+    }
+
+    function resetScroll() {
+      pauseScroll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('progressLine').style.width = '0%';
+    }
+
+    function updateSpeed(val) {
+      scrollSpeed = parseInt(val);
+      document.getElementById('speedValue').textContent = val + 'x';
+      if (isScrolling) {
+        startScroll(); // restart with new speed
+      }
+    }
+
+    function adjustFontSize(delta) {
+      currentFontSize = Math.max(1.1, Math.min(2.8, currentFontSize + delta * 0.15));
+      document.documentElement.style.setProperty('--font-size', currentFontSize + 'rem');
+    }
+
+    function updateProgressBar() {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressLine').style.width = scrolled + '%';
+    }
+
+    window.addEventListener('scroll', updateProgressBar);
+
+    // Keyboard shortcuts: Spacebar to toggle, Arrow Up/Down for speed
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        toggleScroll();
+      } else if (e.code === 'ArrowUp') {
+        e.preventDefault();
+        const slider = document.getElementById('speedSlider');
+        if (slider.value < 10) {
+          slider.value = parseInt(slider.value) + 1;
+          updateSpeed(slider.value);
+        }
+      } else if (e.code === 'ArrowDown') {
+        e.preventDefault();
+        const slider = document.getElementById('speedSlider');
+        if (slider.value > 1) {
+          slider.value = parseInt(slider.value) - 1;
+          updateSpeed(slider.value);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
