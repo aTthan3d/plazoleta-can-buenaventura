@@ -743,10 +743,13 @@ table.admin-table tr:nth-child(even) {
     <h1>Evaluación de Jugadores y Experiencia 3D</h1>
     <p class="sub">Formulario interactivo para evaluar el videojuego en este momento. Prueba ambas versiones en pantalla, compara las mejoras de locomoción, la navegación en lancha hacia la isla y la ambientación sonora del Pacífico.</p>
     
-    <div class="counter-box" title="Evaluaciones registradas en tiempo real">
+    <div class="counter-box" onclick="openAdminModal()" style="cursor: pointer; user-select: none; transition: transform 0.2s, box-shadow 0.2s;" title="¡Haz clic aquí para ver la lista completa de evaluaciones!">
       <span>📊 Evaluaciones recibidas:</span>
       <strong id="counter-display">Cargando...</strong>
       <span style="color:var(--text-muted); font-size:0.85rem">jugadores</span>
+      <span style="background:var(--ocre); color:#000; font-weight:bold; font-size:0.75rem; padding:4px 10px; border-radius:12px; margin-left:8px; display:inline-flex; align-items:center; gap:4px;">
+        👁️ Ver Evaluaciones
+      </span>
     </div>
   </header>
 
@@ -1582,5 +1585,9 @@ document.addEventListener("keydown", function(e) {
 })();
 </script>
 
+  <!-- Botón flotante para ver evaluaciones registradas -->
+  <button type="button" class="btn-admin-float" onclick="openAdminModal()" style="z-index: 900; box-shadow: 0 4px 16px rgba(0,0,0,0.6); cursor: pointer;" title="Abrir tabla de evaluaciones">
+    <span>📊 Ver Evaluaciones</span> (<span id="btn-count">5</span>)
+  </button>
 </body>
 </html>
