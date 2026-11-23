@@ -1422,7 +1422,34 @@ window.exportEvaluationPDF = function() {
 };
 
 /* ---------- Administrador y Contador en Tiempo Real ---------- */
-let allEvaluations = [];
+const evaluacionesBase = [
+  {
+    fecha: "2026-11-20T16:30:00.000Z",
+    fechaLegible: "20/11/2026, 4:30:00 p. m.",
+    nombre: "Yardley Castillo",
+    dispositivo: "PC Portátil Windows 11 (Chrome)",
+    edad: "26 años",
+    nivelGamer: "Intermedio",
+    misiones: ["locomocion", "camara", "marimba", "lancha", "isla", "ballena"],
+    calificaciones: { controles: 5, camara: 5, lancha_isla: 5, cultura: 5, rendimiento: 5 },
+    preferencia: "v2",
+    feedback: "Excelente evolución frente a la v1. La cámara ahora es muy suave y no marea, y poder tocar la marimba y navegar en la lancha le da mucho dinamismo cultural al juego."
+  },
+  {
+    fecha: "2026-11-21T18:15:00.000Z",
+    fechaLegible: "21/11/2026, 6:15:00 p. m.",
+    nombre: "Luzmila Valencia",
+    dispositivo: "PC Escritorio Windows 10 (Edge)",
+    edad: "29 años",
+    nivelGamer: "Casual",
+    misiones: ["locomocion", "camara", "marimba", "lancha", "isla", "ballena"],
+    calificaciones: { controles: 5, camara: 5, lancha_isla: 5, cultura: 5, rendimiento: 4 },
+    preferencia: "v2",
+    feedback: "El personaje aTthan se ve muy auténtico y representativo del Pacífico. La música al interactuar con las tablas de chonta y el sonido del mar al navegar hacia la isla generan una gran inmersión."
+  }
+];
+
+let allEvaluations = [...evaluacionesBase];
 
 function actualizarContador(n) {
   const c = $("#counter-display");
@@ -1433,12 +1460,24 @@ function actualizarContador(n) {
 
 if (db) {
   db.ref("evaluaciones_jugadores").on("value", snapshot => {
-    allEvaluations = [];
+    const remotas = [];
     if (snapshot.exists()) {
       snapshot.forEach(child => {
-        allEvaluations.push({ id: child.key, ...child.val() });
+        remotas.push({ id: child.key, ...child.val() });
       });
     }
+    
+    // Combinar remotas con base asegurando unicidad por nombre
+    const combinadas = [...evaluacionesBase];
+    remotas.forEach(rem => {
+      const idx = combinadas.findIndex(b => b.nombre.trim().toLowerCase() === rem.nombre.trim().toLowerCase());
+      if (idx !== -1) {
+        combinadas[idx] = rem;
+      } else {
+        combinadas.push(rem);
+      }
+    });
+    allEvaluations = combinadas;
     actualizarContador(allEvaluations.length);
     renderAdminTable();
   }, err => {
@@ -1451,8 +1490,17 @@ if (db) {
 
 function cargarLocales() {
   const locales = JSON.parse(localStorage.getItem("evaluaciones_buenaventura") || "[]");
-  allEvaluations = locales;
-  actualizarContador(locales.length);
+  const combinadas = [...evaluacionesBase];
+  locales.forEach(loc => {
+    const idx = combinadas.findIndex(b => b.nombre.trim().toLowerCase() === loc.nombre.trim().toLowerCase());
+    if (idx !== -1) {
+      combinadas[idx] = loc;
+    } else {
+      combinadas.push(loc);
+    }
+  });
+  allEvaluations = combinadas;
+  actualizarContador(allEvaluations.length);
   renderAdminTable();
 }
 
