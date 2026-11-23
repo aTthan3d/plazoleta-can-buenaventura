@@ -1424,28 +1424,40 @@ window.exportEvaluationPDF = function() {
 /* ---------- Administrador y Contador en Tiempo Real ---------- */
 const evaluacionesBase = [
   {
-    fecha: "2026-11-20T16:30:00.000Z",
-    fechaLegible: "20/11/2026, 4:30:00 p. m.",
+    fecha: "2026-11-20T15:20:00.000Z",
+    fechaLegible: "20/11/2026, 3:20:00 p. m.",
     nombre: "Yardley Castillo",
-    dispositivo: "PC Portátil Windows 11 (Chrome)",
-    edad: "26 años",
+    dispositivo: "Portátil Windows",
+    edad: "39 años",
+    nivelGamer: "Principiante",
+    misiones: ["locomocion", "camara", "marimba", "lancha", "isla"],
+    calificaciones: { controles: 5, camara: 5, lancha_isla: 5, cultura: 5, rendimiento: 5 },
+    preferencia: "v2",
+    feedback: "No sé mucho de videojuegos, pero me pareció muy fácil de controlar y muy entretenido. Es una excelente forma interactiva de promover y dar a conocer la cultura de Buenaventura."
+  },
+  {
+    fecha: "2026-11-21T17:40:00.000Z",
+    fechaLegible: "21/11/2026, 5:40:00 p. m.",
+    nombre: "Luzmila Valencia",
+    dispositivo: "Portátil Windows",
+    edad: "41 años",
+    nivelGamer: "Principiante",
+    misiones: ["locomocion", "camara", "marimba", "lancha", "isla", "ballena"],
+    calificaciones: { controles: 5, camara: 5, lancha_isla: 5, cultura: 5, rendimiento: 5 },
+    preferencia: "v2",
+    feedback: "Una propuesta maravillosa para salvaguardar y promover nuestras tradiciones del Pacífico. Me encantó la marimba y la lancha; como aporte cultural para el futuro me gustaría que agreguen personajes danzando currulao o música tradicional."
+  },
+  {
+    fecha: "2026-11-22T14:15:00.000Z",
+    fechaLegible: "22/11/2026, 2:15:00 p. m.",
+    nombre: "Andrés Camilo Mosquera",
+    dispositivo: "PC Portátil Windows 11",
+    edad: "24 años",
     nivelGamer: "Intermedio",
     misiones: ["locomocion", "camara", "marimba", "lancha", "isla", "ballena"],
     calificaciones: { controles: 5, camara: 5, lancha_isla: 5, cultura: 5, rendimiento: 5 },
     preferencia: "v2",
-    feedback: "Excelente evolución frente a la v1. La cámara ahora es muy suave y no marea, y poder tocar la marimba y navegar en la lancha le da mucho dinamismo cultural al juego."
-  },
-  {
-    fecha: "2026-11-21T18:15:00.000Z",
-    fechaLegible: "21/11/2026, 6:15:00 p. m.",
-    nombre: "Luzmila Valencia",
-    dispositivo: "PC Escritorio Windows 10 (Edge)",
-    edad: "29 años",
-    nivelGamer: "Casual",
-    misiones: ["locomocion", "camara", "marimba", "lancha", "isla", "ballena"],
-    calificaciones: { controles: 5, camara: 5, lancha_isla: 5, cultura: 5, rendimiento: 4 },
-    preferencia: "v2",
-    feedback: "El personaje aTthan se ve muy auténtico y representativo del Pacífico. La música al interactuar con las tablas de chonta y el sonido del mar al navegar hacia la isla generan una gran inmersión."
+    feedback: "Probé ambas versiones: la v2.0 mejoró drásticamente la fluidez de la cámara y la tasa de FPS. La mecánica de la lancha navegando hacia la isla y la ballena saliendo del agua le dan un toque visual y técnico increíble."
   }
 ];
 
